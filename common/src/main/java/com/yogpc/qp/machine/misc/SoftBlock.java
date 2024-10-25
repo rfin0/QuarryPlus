@@ -38,7 +38,7 @@ public final class SoftBlock extends TransparentBlock implements InCreativeTabs 
             .isViewBlocking((state, world, pos) -> false)
             .setId(QuarryPlus.blockKey(NAME))
         );
-        blockItem = new BlockItem(this, new Item.Properties().setId(QuarryPlus.itemKey(NAME)));
+        blockItem = new BlockItem(this, new Item.Properties().setId(QuarryPlus.itemKey(NAME)).useBlockDescriptionPrefix());
     }
 
     private static final MapCodec<SoftBlock> CODEC = simpleCodec(p -> new SoftBlock());

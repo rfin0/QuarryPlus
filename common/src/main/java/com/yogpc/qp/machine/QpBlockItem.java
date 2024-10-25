@@ -6,6 +6,6 @@ import net.minecraft.world.item.BlockItem;
 
 public class QpBlockItem extends BlockItem {
     public QpBlockItem(QpBlock block, Properties properties) {
-        super(block, properties.setId(ResourceKey.create(Registries.ITEM, block.name)));
+        super(block, properties.setId(ResourceKey.create(Registries.ITEM, block.name)).useBlockDescriptionPrefix());
     }
 }

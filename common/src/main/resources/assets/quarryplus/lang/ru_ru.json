@@ -45,7 +45,7 @@
   "chat.flexiblemarker.reset": "Reset controller configuration.",
   "config.jade.plugin_quarryplus.jade_plugin": "QuarryPlus Plugin",
   "container.yog.basic": "Буфер машины",
-  "enchantment.quarryplus.quary_pickaxe": "Quarry Enchantment",
+  "enchantment.quarryplus.quarry_pickaxe": "Quarry Enchantment",
   "gui.apply": "Применить",
   "gui.buildAdvFrame": "Продвинутая рамка карьера",
   "gui.fortuneList": "Список блоков для удачи",
