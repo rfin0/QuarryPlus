@@ -69,8 +69,10 @@ dependencies {
     compileOnly(project(":common"))
 
     modImplementation(libs.teamreborn.energy)
-    modLocalRuntime(libs.jei.fabric)
-    modLocalRuntime(libs.du.fabric)
+    // modLocalRuntime(libs.jei.fabric)
+    modLocalRuntime(libs.du.fabric) {
+        isTransitive = false
+    }
     modLocalRuntime(libs.slp.fabric)
 
     implementation(libs.config.toml)
