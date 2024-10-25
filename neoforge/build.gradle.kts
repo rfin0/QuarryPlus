@@ -112,8 +112,10 @@ dependencies {
     runtimeOnly(variantOf(libs.slp.neoforge) { classifier("with-library") }) {
         isTransitive = false
     }
-    implementation(libs.du.neoforge)
-    localRuntime(libs.jei.neoforge)
+    implementation(libs.du.neoforge) {
+        isTransitive = false
+    }
+    // localRuntime(libs.jei.neoforge)
 
     gameTestRuntime(platform(libs.junit))
     gameTestRuntime(libs.jupiter)
