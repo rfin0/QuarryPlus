@@ -24,9 +24,11 @@ public final class PlacerContainer extends AbstractContainerMenu {
     private static final int REMOTE_PLACER_START_X = 26;
     @NotNull
     final AbstractPlacerTile tile;
+    final int startX;
 
     private PlacerContainer(@Nullable MenuType<?> menuType, int containerId, Player player, BlockPos pos, int startX) {
         super(menuType, containerId);
+        this.startX = startX;
         tile = (AbstractPlacerTile) Objects.requireNonNull(player.level().getBlockEntity(pos));
 
         for (int i = 0; i < 3; ++i) {

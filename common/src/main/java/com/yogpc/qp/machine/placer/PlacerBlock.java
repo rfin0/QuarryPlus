@@ -1,5 +1,6 @@
 package com.yogpc.qp.machine.placer;
 
+import com.yogpc.qp.machine.GeneralScreenHandler;
 import com.yogpc.qp.machine.QpBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -34,4 +35,8 @@ public final class PlacerBlock extends AbstractPlacerBlock {
         return this.defaultBlockState().setValue(FACING, ctx.getNearestLookingDirection().getOpposite());
     }
 
+    @Override
+    protected GeneralScreenHandler<?> createScreenHandler(AbstractPlacerTile placer) {
+        return new GeneralScreenHandler<>(placer, PlacerContainer::createPlacerContainer);
+    }
 }

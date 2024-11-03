@@ -1,13 +1,17 @@
 package com.yogpc.qp.machine.placer;
 
+import com.yogpc.qp.PlatformAccess;
+import com.yogpc.qp.machine.GeneralScreenHandler;
 import com.yogpc.qp.machine.QpEntityBlock;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -37,13 +41,34 @@ public abstract class AbstractPlacerBlock extends QpEntityBlock {
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (!player.isCrouching() && stack.is(Items.REDSTONE_TORCH)) {
             if (!level.isClientSide && level.getBlockEntity(pos) instanceof AbstractPlacerTile placer) {
-                placer.cycleRedStoneMode();
-                player.displayClientMessage(Component.translatable("quarryplus.chat.placer_rs", placer.redstoneMode.name()), false);
+                if (placer.enabled) {
+                    placer.cycleRedStoneMode();
+                    player.displayClientMessage(Component.translatable("quarryplus.chat.placer_rs", placer.redstoneMode.name()), false);
+                } else {
+                    player.displayClientMessage(Component.translatable("quarryplus.chat.disable_message", getName()), true);
+                }
             }
             return ItemInteractionResult.SUCCESS;
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (level.getBlockEntity(pos) instanceof AbstractPlacerTile placer) {
+            if (!level.isClientSide()) {
+                if (placer.enabled) {
+                    PlatformAccess.getAccess().openGui((ServerPlayer) player, createScreenHandler(placer));
+                } else {
+                    player.displayClientMessage(Component.translatable("quarryplus.chat.disable_message", getName()), true);
+                }
+            }
+            return InteractionResult.sidedSuccess(level.isClientSide());
+        }
+        return super.useWithoutItem(state, level, pos, player, hitResult);
+    }
+
+    protected abstract GeneralScreenHandler<?> createScreenHandler(AbstractPlacerTile placer);
 
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
