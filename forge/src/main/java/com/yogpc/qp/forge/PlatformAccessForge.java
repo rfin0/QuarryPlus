@@ -31,6 +31,7 @@ import com.yogpc.qp.machine.mover.MoverBlock;
 import com.yogpc.qp.machine.mover.MoverContainer;
 import com.yogpc.qp.machine.mover.MoverEntity;
 import com.yogpc.qp.machine.placer.PlacerBlock;
+import com.yogpc.qp.machine.placer.PlacerContainer;
 import com.yogpc.qp.machine.placer.PlacerEntity;
 import com.yogpc.qp.machine.quarry.QuarryBlock;
 import com.yogpc.qp.machine.storage.DebugStorageBlock;
@@ -137,6 +138,8 @@ public final class PlatformAccessForge implements PlatformAccess {
         public static final RegistryObject<MenuType<? extends AdvQuarryContainer>> ADV_QUARRY_MENU_TYPE = registerMenu(AdvQuarryContainer.NAME, AdvQuarryContainer::new);
         public static final RegistryObject<MenuType<? extends FilterModuleContainer>> FILTER_MODULE_MENU_TYPE = MENU_TYPE_REGISTER.register(FilterModuleContainer.NAME, () ->
             IForgeMenuType.create((windowId, inv, data) -> new FilterModuleContainer(windowId, inv, inv.getSelected())));
+        public static final RegistryObject<MenuType<? extends PlacerContainer>> PLACER_MENU_TYPE = registerMenu(PlacerContainer.PLACER_GUI_NAME, PlacerContainer::createPlacerContainer);
+        public static final RegistryObject<MenuType<? extends PlacerContainer>> REMOTE_PLACER_MENU_TYPE = registerMenu(PlacerContainer.REMOTE_PLACER_GUI_NAME, PlacerContainer::createRemotePlacerContainer);
 
         public static final RegistryObject<LootItemFunctionType<? extends MachineLootFunction>> MACHINE_LOOT_FUNCTION = LOOT_TYPE_REGISTER.register(MachineLootFunction.NAME, () -> new LootItemFunctionType<>(MachineLootFunction.SERIALIZER));
 
@@ -300,6 +303,16 @@ public final class PlatformAccessForge implements PlatformAccess {
         @Override
         public Supplier<MenuType<? extends FilterModuleContainer>> filterModuleContainer() {
             return FILTER_MODULE_MENU_TYPE;
+        }
+
+        @Override
+        public Supplier<MenuType<? extends PlacerContainer>> placerContainer() {
+            return PLACER_MENU_TYPE;
+        }
+
+        @Override
+        public Supplier<MenuType<? extends PlacerContainer>> remotePlacerContainer() {
+            return REMOTE_PLACER_MENU_TYPE;
         }
 
         @Override

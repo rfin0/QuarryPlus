@@ -27,6 +27,7 @@ import com.yogpc.qp.machine.mover.MoverBlock;
 import com.yogpc.qp.machine.mover.MoverContainer;
 import com.yogpc.qp.machine.mover.MoverEntity;
 import com.yogpc.qp.machine.placer.PlacerBlock;
+import com.yogpc.qp.machine.placer.PlacerContainer;
 import com.yogpc.qp.machine.placer.PlacerEntity;
 import com.yogpc.qp.machine.quarry.QuarryBlock;
 import com.yogpc.qp.machine.storage.DebugStorageBlock;
@@ -111,6 +112,8 @@ public final class PlatformAccessFabric implements PlatformAccess, ServerLifecyc
         public static final MenuType<FilterModuleContainer> FILTER_MODULE_MENU = new ExtendedScreenHandlerType<>((i, inventory, pos) -> new FilterModuleContainer(i, inventory, inventory.getSelected()), BlockPos.STREAM_CODEC);
         public static final PlacerBlock PLACER_BLOCK = new PlacerBlock();
         public static final BlockEntityType<PlacerEntity> PLACER_ENTITY_TYPE = BlockEntityType.Builder.of(PlacerEntity::new, PLACER_BLOCK).build(DSL.emptyPartType());
+        public static final MenuType<PlacerContainer> PLACER_MENU_TYPE = new ExtendedScreenHandlerType<>(PlacerContainer::createPlacerContainer, BlockPos.STREAM_CODEC);
+        public static final MenuType<PlacerContainer> REMOTE_PLACER_MENU_TYPE = new ExtendedScreenHandlerType<>(PlacerContainer::createRemotePlacerContainer, BlockPos.STREAM_CODEC);
 
         public static final LootItemFunctionType<MachineLootFunction> MACHINE_LOOT_FUNCTION = new LootItemFunctionType<>(MachineLootFunction.SERIALIZER);
 
@@ -155,6 +158,8 @@ public final class PlatformAccessFabric implements PlatformAccess, ServerLifecyc
             Registry.register(BuiltInRegistries.MENU, ResourceLocation.fromNamespaceAndPath(QuarryPlus.modID, DebugStorageContainer.NAME), DEBUG_STORAGE_MENU);
             Registry.register(BuiltInRegistries.MENU, AdvQuarryContainer.GUI_ID, ADV_QUARRY_MENU);
             Registry.register(BuiltInRegistries.MENU, FilterModuleContainer.GUI_ID, FILTER_MODULE_MENU);
+            Registry.register(BuiltInRegistries.MENU, PlacerContainer.PLACER_GUI_ID, PLACER_MENU_TYPE);
+            Registry.register(BuiltInRegistries.MENU, PlacerContainer.REMOTE_PLACER_GUI_ID, REMOTE_PLACER_MENU_TYPE);
             Registry.register(BuiltInRegistries.LOOT_FUNCTION_TYPE, ResourceLocation.fromNamespaceAndPath(QuarryPlus.modID, MachineLootFunction.NAME), MACHINE_LOOT_FUNCTION);
             Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(QuarryPlus.modID, QuarryPlus.modID), TAB);
             for (Map.Entry<ResourceLocation, DataComponentType<?>> entry : QuarryDataComponents.ALL.entrySet()) {
@@ -313,6 +318,16 @@ public final class PlatformAccessFabric implements PlatformAccess, ServerLifecyc
         @Override
         public Supplier<MenuType<? extends FilterModuleContainer>> filterModuleContainer() {
             return Lazy.value(FILTER_MODULE_MENU);
+        }
+
+        @Override
+        public Supplier<MenuType<? extends PlacerContainer>> placerContainer() {
+            return Lazy.value(PLACER_MENU_TYPE);
+        }
+
+        @Override
+        public Supplier<MenuType<? extends PlacerContainer>> remotePlacerContainer() {
+            return Lazy.value(REMOTE_PLACER_MENU_TYPE);
         }
 
         @Override

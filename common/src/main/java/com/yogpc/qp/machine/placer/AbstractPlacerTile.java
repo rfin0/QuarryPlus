@@ -211,7 +211,7 @@ public abstract class AbstractPlacerTile extends QpEntity
 
     @Override
     public boolean stillValid(Player player) {
-        return container.stillValid(player);
+        return getBlockPos().closerToCenterThan(player.position(), 8);
     }
 
     @Override
