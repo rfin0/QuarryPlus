@@ -25,7 +25,6 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 
 public abstract class AbstractPlacerTile extends QpEntity
@@ -190,6 +189,13 @@ public abstract class AbstractPlacerTile extends QpEntity
         container.clearContent();
     }
 
+    public void cycleRedStoneMode() {
+        this.redstoneMode = RedStoneMode.cycle(redstoneMode);
+        if (level != null && !level.isClientSide) {
+            syncToClient();
+        }
+    }
+
     private static final class PlacerContainer extends SimpleContainer {
         private final QpEntity parent;
 
@@ -229,10 +235,6 @@ public abstract class AbstractPlacerTile extends QpEntity
 
         public boolean canBreak() {
             return breakEnabled;
-        }
-
-        public boolean shouldWork(BooleanSupplier powered) {
-            return true;
         }
 
         public static RedStoneMode cycle(RedStoneMode now) {
