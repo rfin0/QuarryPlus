@@ -5,7 +5,10 @@ import com.yogpc.qp.machine.QpEntity;
 import com.yogpc.qp.packet.ClientSync;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -49,6 +52,33 @@ public abstract class AbstractPlacerTile extends QpEntity
 
     protected AbstractPlacerTile(BlockPos pos, BlockState blockState) {
         super(pos, blockState);
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        toClientTag(tag, registries);
+        tag.put("container", container.createTag(registries));
+    }
+
+    @Override
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        fromClientTag(tag, registries);
+        container.fromTag(tag.getList("container", Tag.TAG_COMPOUND), registries);
+    }
+
+    @Override
+    public void fromClientTag(CompoundTag tag, HolderLookup.Provider registries) {
+        lastPlacedIndex = tag.getInt("lastPlacedIndex");
+        redstoneMode = RedStoneMode.valueOf(tag.getString("mode"));
+    }
+
+    @Override
+    public CompoundTag toClientTag(CompoundTag tag, HolderLookup.Provider registries) {
+        tag.putInt("lastPlacedIndex", lastPlacedIndex);
+        tag.putString("mode", redstoneMode.name());
+        return tag;
     }
 
     protected abstract BlockPos getTargetPos();
