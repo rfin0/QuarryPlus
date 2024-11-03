@@ -30,6 +30,8 @@ import com.yogpc.qp.machine.module.*;
 import com.yogpc.qp.machine.mover.MoverBlock;
 import com.yogpc.qp.machine.mover.MoverContainer;
 import com.yogpc.qp.machine.mover.MoverEntity;
+import com.yogpc.qp.machine.placer.PlacerBlock;
+import com.yogpc.qp.machine.placer.PlacerEntity;
 import com.yogpc.qp.machine.quarry.QuarryBlock;
 import com.yogpc.qp.machine.storage.DebugStorageBlock;
 import com.yogpc.qp.machine.storage.DebugStorageContainer;
@@ -97,6 +99,7 @@ public final class PlatformAccessForge implements PlatformAccess {
         public static final RegistryObject<AdvQuarryBlock> BLOCK_ADV_QUARRY = registerBlock(AdvQuarryBlock.NAME, AdvQuarryBlock::new);
         public static final RegistryObject<GeneratorBlock> BLOCK_GENERATOR = registerBlock(GeneratorBlock.NAME, GeneratorBlock::new);
         public static final RegistryObject<MoverBlock> BLOCK_MOVER = registerBlock(MoverBlock.NAME, MoverBlock::new);
+        public static final RegistryObject<PlacerBlock> BLOCK_PLACER = registerBlock(PlacerBlock.NAME, PlacerBlock::new);
         // Marker
         public static final RegistryObject<NormalMarkerBlock> BLOCK_MARKER = registerBlock(NormalMarkerBlock.NAME, NormalMarkerBlock::new);
         public static final RegistryObject<FlexibleMarkerBlock> BLOCK_FLEXIBLE_MARKER = registerBlock(FlexibleMarkerBlock.NAME, FlexibleMarkerBlock::new);
@@ -123,6 +126,7 @@ public final class PlatformAccessForge implements PlatformAccess {
         public static final RegistryObject<BlockEntityType<ChunkMarkerEntityForge>> CHUNK_MARKER_ENTITY_TYPE = registerBlockEntity(ChunkMarkerBlock.NAME, BLOCK_CHUNK_MARKER, ChunkMarkerEntityForge::new, EnableMap.EnableOrNot.CONFIG_ON);
         public static final RegistryObject<BlockEntityType<DebugStorageEntity>> DEBUG_STORAGE_TYPE = registerBlockEntity(DebugStorageBlock.NAME, BLOCK_DEBUG_STORAGE, DebugStorageEntity::new, EnableMap.EnableOrNot.ALWAYS_ON);
         public static final RegistryObject<BlockEntityType<AdvQuarryEntityForge>> ADV_QUARRY_ENTITY_TYPE = registerBlockEntity(AdvQuarryBlock.NAME, BLOCK_ADV_QUARRY, AdvQuarryEntityForge::new, EnableMap.EnableOrNot.CONFIG_ON);
+        public static final RegistryObject<BlockEntityType<PlacerEntity>> PLACER_ENTITY_TYPE = registerBlockEntity(PlacerBlock.NAME, BLOCK_PLACER, PlacerEntity::new, EnableMap.EnableOrNot.CONFIG_ON);
 
         public static final RegistryObject<MenuType<? extends YSetterContainer>> Y_SET_MENU_TYPE = registerMenu("gui_y_setter", YSetterContainer::new);
         public static final RegistryObject<MenuType<? extends MoverContainer>> MOVER_MENU_TYPE = registerMenu("gui_mover", MoverContainer::new);
@@ -226,6 +230,11 @@ public final class PlatformAccessForge implements PlatformAccess {
         @Override
         public Supplier<? extends SoftBlock> softBlock() {
             return BLOCK_SOFT;
+        }
+
+        @Override
+        public Supplier<? extends PlacerBlock> placerBlock() {
+            return BLOCK_PLACER;
         }
 
         @Override

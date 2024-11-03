@@ -38,7 +38,7 @@ public abstract class AbstractPlacerBlock extends QpEntityBlock {
         if (!player.isCrouching() && stack.is(Items.REDSTONE_TORCH)) {
             if (!level.isClientSide && level.getBlockEntity(pos) instanceof AbstractPlacerTile placer) {
                 placer.cycleRedStoneMode();
-                player.displayClientMessage(Component.translatable("quarryplus.chat.placer_rs", placer.redstoneMode), false);
+                player.displayClientMessage(Component.translatable("quarryplus.chat.placer_rs", placer.redstoneMode.name()), false);
             }
             return ItemInteractionResult.SUCCESS;
         }

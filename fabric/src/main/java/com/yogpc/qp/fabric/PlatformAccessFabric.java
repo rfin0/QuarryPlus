@@ -26,6 +26,8 @@ import com.yogpc.qp.machine.module.*;
 import com.yogpc.qp.machine.mover.MoverBlock;
 import com.yogpc.qp.machine.mover.MoverContainer;
 import com.yogpc.qp.machine.mover.MoverEntity;
+import com.yogpc.qp.machine.placer.PlacerBlock;
+import com.yogpc.qp.machine.placer.PlacerEntity;
 import com.yogpc.qp.machine.quarry.QuarryBlock;
 import com.yogpc.qp.machine.storage.DebugStorageBlock;
 import com.yogpc.qp.machine.storage.DebugStorageContainer;
@@ -107,6 +109,8 @@ public final class PlatformAccessFabric implements PlatformAccess, ServerLifecyc
         public static final MenuType<DebugStorageContainer> DEBUG_STORAGE_MENU = new ExtendedScreenHandlerType<>(DebugStorageContainer::new, BlockPos.STREAM_CODEC);
         public static final FilterModuleItem FILTER_MODULE_ITEM = new FilterModuleItem();
         public static final MenuType<FilterModuleContainer> FILTER_MODULE_MENU = new ExtendedScreenHandlerType<>((i, inventory, pos) -> new FilterModuleContainer(i, inventory, inventory.getSelected()), BlockPos.STREAM_CODEC);
+        public static final PlacerBlock PLACER_BLOCK = new PlacerBlock();
+        public static final BlockEntityType<PlacerEntity> PLACER_ENTITY_TYPE = BlockEntityType.Builder.of(PlacerEntity::new, PLACER_BLOCK).build(DSL.emptyPartType());
 
         public static final LootItemFunctionType<MachineLootFunction> MACHINE_LOOT_FUNCTION = new LootItemFunctionType<>(MachineLootFunction.SERIALIZER);
 
@@ -125,6 +129,7 @@ public final class PlatformAccessFabric implements PlatformAccess, ServerLifecyc
             registerEntityBlock(ADV_QUARRY_BLOCK, ADV_QUARRY_ENTITY_TYPE, EnableMap.EnableOrNot.CONFIG_ON);
             registerEntityBlock(GENERATOR_BLOCK, GENERATOR_ENTITY_TYPE, EnableMap.EnableOrNot.ALWAYS_ON);
             registerEntityBlock(MOVER_BLOCK, MOVER_ENTITY_TYPE, EnableMap.EnableOrNot.CONFIG_ON);
+            registerEntityBlock(PLACER_BLOCK, PLACER_ENTITY_TYPE, EnableMap.EnableOrNot.CONFIG_ON);
             // Marker
             registerEntityBlock(MARKER_BLOCK, MARKER_ENTITY_TYPE, EnableMap.EnableOrNot.ALWAYS_ON);
             registerEntityBlock(FLEXIBLE_MARKER_BLOCK, FLEXIBLE_MARKER_ENTITY_TYPE, EnableMap.EnableOrNot.CONFIG_ON);
@@ -238,6 +243,11 @@ public final class PlatformAccessFabric implements PlatformAccess, ServerLifecyc
         @Override
         public Supplier<? extends SoftBlock> softBlock() {
             return Lazy.value(SOFT_BLOCK);
+        }
+
+        @Override
+        public Supplier<? extends PlacerBlock> placerBlock() {
+            return Lazy.value(PLACER_BLOCK);
         }
 
         @Override
