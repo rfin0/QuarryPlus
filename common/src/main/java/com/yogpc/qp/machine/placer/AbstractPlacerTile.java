@@ -97,8 +97,9 @@ public abstract class AbstractPlacerTile extends QpEntity
         BlockState state = level.getBlockState(pos);
         if (state.getDestroySpeed(level, pos) < 0) return; // Unbreakable.
         Player fake = PlatformAccess.getAccess().mining().getQuarryFakePlayer(this, (ServerLevel) level, pos);
-        fake.setItemInHand(InteractionHand.MAIN_HAND, getSilkPickaxe());
-        List<ItemStack> drops = Block.getDrops(state, (ServerLevel) level, pos, level.getBlockEntity(pos));
+        var pickaxe = getSilkPickaxe();
+        fake.setItemInHand(InteractionHand.MAIN_HAND, pickaxe);
+        List<ItemStack> drops = Block.getDrops(state, (ServerLevel) level, pos, level.getBlockEntity(pos), fake, pickaxe);
         level.removeBlock(pos, false);
         drops.stream().map(container::addItem) // Return not-inserted items.
             .filter(Predicate.not(ItemStack::isEmpty)).forEach(s -> Block.popResource(level, getBlockPos(), s));

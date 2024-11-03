@@ -17,6 +17,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -24,6 +26,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.List;
 
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.TRIGGERED;
 
 public abstract class AbstractPlacerBlock extends QpEntityBlock {
@@ -43,7 +46,7 @@ public abstract class AbstractPlacerBlock extends QpEntityBlock {
             if (!level.isClientSide && level.getBlockEntity(pos) instanceof AbstractPlacerTile placer) {
                 if (placer.enabled) {
                     placer.cycleRedStoneMode();
-                    player.displayClientMessage(Component.translatable("quarryplus.chat.placer_rs", placer.redstoneMode.name()), false);
+                    player.displayClientMessage(Component.translatable("quarryplus.chat.placer_rs", placer.redstoneMode.toString()), false);
                 } else {
                     player.displayClientMessage(Component.translatable("quarryplus.chat.disable_message", getName()), true);
                 }
@@ -108,5 +111,15 @@ public abstract class AbstractPlacerBlock extends QpEntityBlock {
         if (Screen.hasShiftDown()) {
             tooltipComponents.add(Component.translatable("quarryplus.tooltip.placer_plus"));
         }
+    }
+
+    @Override
+    protected BlockState rotate(BlockState state, Rotation rotation) {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    protected BlockState mirror(BlockState state, Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 }
