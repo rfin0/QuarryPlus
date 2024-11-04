@@ -9,6 +9,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.TestFunction;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -163,7 +164,7 @@ public final class PlacerTest {
     }
 
     static class PlacerTestRedStone {
-        static void sendRedStoneSignal(GameTestHelper helper) {
+        static void sendRedStoneSignalPlace(GameTestHelper helper) {
             var stonePos = placerPos.relative(Direction.NORTH);
             var placerBlock = PlatformAccess.getAccess().registerObjects().placerBlock().get();
             helper.setBlock(placerPos, placerBlock.defaultBlockState().setValue(BlockStateProperties.FACING, Direction.NORTH));
@@ -171,9 +172,23 @@ public final class PlacerTest {
 
             helper.startSequence()
                 .thenExecuteAfter(1, () -> tile.setItem(0, new ItemStack(Blocks.STONE)))
-                .thenExecuteAfter(1, () -> helper.setBlock(stonePos, Blocks.STONE))
                 .thenExecuteAfter(1, () -> helper.setBlock(placerPos.relative(Direction.EAST), Blocks.REDSTONE_BLOCK))
                 .thenExecuteAfter(1, () -> helper.assertBlockPresent(Blocks.STONE, stonePos))
+                .thenSucceed();
+        }
+
+        static void sendRedStoneSignalBreak(GameTestHelper helper) {
+            var stonePos = placerPos.relative(Direction.NORTH);
+            var placerBlock = PlatformAccess.getAccess().registerObjects().placerBlock().get();
+            helper.setBlock(placerPos, placerBlock.defaultBlockState().setValue(BlockStateProperties.FACING, Direction.NORTH));
+            helper.setBlock(stonePos, Blocks.STONE);
+            PlacerEntity tile = helper.getBlockEntity(placerPos);
+
+            helper.startSequence()
+                .thenExecuteAfter(1, () -> helper.setBlock(placerPos.relative(Direction.EAST), Blocks.REDSTONE_BLOCK))
+                .thenExecuteAfter(1, () -> helper.setBlock(placerPos.relative(Direction.EAST), Blocks.AIR))
+                .thenExecuteAfter(1, () -> helper.assertBlockNotPresent(Blocks.STONE, stonePos))
+                .thenExecuteAfter(1, () -> assertEquals(1, tile.countItem(Items.STONE)))
                 .thenSucceed();
         }
     }
