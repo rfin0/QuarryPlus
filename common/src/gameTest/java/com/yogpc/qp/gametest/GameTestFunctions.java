@@ -4,6 +4,7 @@ import com.google.common.base.CaseFormat;
 import com.yogpc.qp.machine.DebugStorageTest;
 import com.yogpc.qp.machine.advquarry.PlaceAdvQuarryTest;
 import com.yogpc.qp.machine.mover.PlaceMoverTest;
+import com.yogpc.qp.machine.placer.PlacerTest;
 import com.yogpc.qp.machine.quarry.PlaceQuarryTest;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -51,11 +52,12 @@ public final class GameTestFunctions {
         var fromClass = getTestFunctionStream(batchName, structureName, classes, 100);
         return Stream.of(
             CheckBlockDropTest.checkDrops(batchName, structureName),
+            PlacerTest.tests(batchName, structureName),
             fromClass
         ).flatMap(Function.identity()).toList();
     }
 
-    private static @NotNull Stream<TestFunction> getTestFunctionStream(String batchName, String structureName, List<Class<?>> classes, int maxTicks) {
+    public static @NotNull Stream<TestFunction> getTestFunctionStream(String batchName, String structureName, List<Class<?>> classes, int maxTicks) {
         return classes.stream()
             .flatMap(c -> Stream.of(c.getDeclaredMethods()))
             .filter(Predicate.not(Method::isSynthetic))

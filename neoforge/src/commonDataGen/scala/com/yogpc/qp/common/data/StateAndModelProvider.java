@@ -203,7 +203,7 @@ final class StateAndModelProvider extends BlockStateProvider {
     }
 
     void placer() {
-        /*QpBlock block = Holder.BLOCK_PLACER;
+        QpBlock block = PlatformAccessNeoForge.RegisterObjectsNeoForge.BLOCK_PLACER.get();
         var basePath = block.name.getPath();
         var model = models().orientableWithBottom("block/" + basePath,
             blockTexture("plus_stone_side"),
@@ -218,7 +218,7 @@ final class StateAndModelProvider extends BlockStateProvider {
                 .rotationY(direction.getAxis() == Direction.Axis.Y ? 0 : Math.floorMod(((int) direction.toYRot()) + 180, 360))
                 .build();
         }, BlockStateProperties.TRIGGERED);
-        simpleBlockItem(block, model);*/
+        simpleBlockItem(block, model);
     }
 
     void mining_well() {
