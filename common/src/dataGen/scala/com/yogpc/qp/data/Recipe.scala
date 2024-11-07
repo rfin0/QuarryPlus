@@ -194,6 +194,18 @@ class Recipe(ingredientProvider: IngredientProvider)(using recipeOutput: RecipeO
       .requires(ip.marker)
       .unlockedBy(ip.markerTag)
       .save(ip.filterModuleRecipeOutput(recipeOutput))
+
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, PlatformAccess.getAccess.registerObjects().placerBlock().get())
+      .define('D', Items.DISPENSER)
+      .define('R', ip.redStoneDust)
+      .define('I', ip.ironIngot)
+      .define('M', Items.MOSSY_COBBLESTONE)
+      .define('G', ip.goldIngot)
+      .pattern("GDG")
+      .pattern("MRM")
+      .pattern("MIM")
+      .unlockedBy(Items.DISPENSER)
+      .save(recipeOutput)
   }
 
   private def quarryItem(name: String): Item = {

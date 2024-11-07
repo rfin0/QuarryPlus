@@ -8,6 +8,7 @@ import com.yogpc.qp.machine.marker.ChunkMarkerBlock;
 import com.yogpc.qp.machine.marker.FlexibleMarkerBlock;
 import com.yogpc.qp.machine.module.FilterModuleItem;
 import com.yogpc.qp.machine.module.RepeatTickModuleItem;
+import com.yogpc.qp.machine.placer.PlacerBlock;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -448,6 +449,29 @@ public final class LoadRecipeTest {
         var result = recipe.assemble(input, helper.getLevel().registryAccess());
         assertEquals(
             PlatformAccess.getAccess().registerObjects().advQuarryBlock().get().blockItem,
+            result.getItem()
+        );
+
+        helper.succeed();
+    }
+
+    public static void createPlacer(GameTestHelper helper) {
+        var recipe = findRecipe(helper, PlacerBlock.NAME);
+        var D = Items.DISPENSER.getDefaultInstance();
+        var R = Items.REDSTONE.getDefaultInstance();
+        var I = Items.IRON_INGOT.getDefaultInstance();
+        var M = Items.MOSSY_COBBLESTONE.getDefaultInstance();
+        var G = Items.GOLD_INGOT.getDefaultInstance();
+
+        var input = CraftingInput.of(3, 3, List.of(
+            G, D, G,
+            M, R, M,
+            M, I, M
+        ));
+        assertTrue(recipe.matches(input, helper.getLevel()));
+        var result = recipe.assemble(input, helper.getLevel().registryAccess());
+        assertEquals(
+            PlatformAccess.getAccess().registerObjects().placerBlock().get().blockItem,
             result.getItem()
         );
 

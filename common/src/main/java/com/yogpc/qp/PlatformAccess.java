@@ -18,6 +18,8 @@ import com.yogpc.qp.machine.module.FilterModuleContainer;
 import com.yogpc.qp.machine.module.ModuleContainer;
 import com.yogpc.qp.machine.mover.MoverBlock;
 import com.yogpc.qp.machine.mover.MoverContainer;
+import com.yogpc.qp.machine.placer.PlacerBlock;
+import com.yogpc.qp.machine.placer.PlacerContainer;
 import com.yogpc.qp.machine.quarry.QuarryBlock;
 import com.yogpc.qp.machine.storage.DebugStorageBlock;
 import com.yogpc.qp.machine.storage.DebugStorageContainer;
@@ -82,6 +84,8 @@ public interface PlatformAccess {
 
         Supplier<? extends SoftBlock> softBlock();
 
+        Supplier<? extends PlacerBlock> placerBlock();
+
         Optional<BlockEntityType<?>> getBlockEntityType(QpBlock block);
 
         default Collection<? extends BlockEntityType<?>> getBlockEntityTypes() {
@@ -112,6 +116,10 @@ public interface PlatformAccess {
         Supplier<MenuType<? extends AdvQuarryContainer>> advQuarryContainer();
 
         Supplier<MenuType<? extends FilterModuleContainer>> filterModuleContainer();
+
+        Supplier<MenuType<? extends PlacerContainer>> placerContainer();
+
+        Supplier<MenuType<? extends PlacerContainer>> remotePlacerContainer();
 
         Supplier<LootItemFunctionType<? extends MachineLootFunction>> machineLootFunction();
     }

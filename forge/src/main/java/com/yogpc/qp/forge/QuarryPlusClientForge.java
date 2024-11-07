@@ -8,6 +8,7 @@ import com.yogpc.qp.machine.misc.YSetterScreen;
 import com.yogpc.qp.machine.module.FilterModuleScreen;
 import com.yogpc.qp.machine.module.ModuleScreen;
 import com.yogpc.qp.machine.mover.MoverScreen;
+import com.yogpc.qp.machine.placer.PlacerScreen;
 import com.yogpc.qp.machine.storage.DebugStorageScreen;
 import com.yogpc.qp.render.*;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -37,6 +38,7 @@ public final class QuarryPlusClientForge {
         MenuScreens.register(PlatformAccessForge.RegisterObjectsForge.DEBUG_STORAGE_MENU_TYPE.get(), DebugStorageScreen::new);
         MenuScreens.register(PlatformAccessForge.RegisterObjectsForge.ADV_QUARRY_MENU_TYPE.get(), AdvQuarryScreen::new);
         MenuScreens.register(PlatformAccessForge.RegisterObjectsForge.FILTER_MODULE_MENU_TYPE.get(), FilterModuleScreen::new);
+        MenuScreens.register(PlatformAccessForge.RegisterObjectsForge.PLACER_MENU_TYPE.get(), PlacerScreen::new);
         QuarryPlus.LOGGER.info("Initialize Client finished");
     }
 }
