@@ -195,7 +195,7 @@ class Recipe(ingredientProvider: IngredientProvider)(using recipeOutput: RecipeO
       .unlockedBy(ip.markerTag)
       .save(ip.filterModuleRecipeOutput(recipeOutput))
 
-    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, PlatformAccess.getAccess.registerObjects().placerBlock().get())
+    shaped(RecipeCategory.MISC, PlatformAccess.getAccess.registerObjects().placerBlock().get())
       .define('D', Items.DISPENSER)
       .define('R', ip.redStoneDust)
       .define('I', ip.ironIngot)

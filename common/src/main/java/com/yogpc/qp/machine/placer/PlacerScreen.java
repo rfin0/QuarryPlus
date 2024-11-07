@@ -3,6 +3,7 @@ package com.yogpc.qp.machine.placer;
 import com.yogpc.qp.QuarryPlus;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -23,7 +24,7 @@ public final class PlacerScreen extends AbstractContainerScreen<PlacerContainer>
 
     @Override
     protected void renderBg(GuiGraphics graphics, float delta, int mouseX, int mouseY) {
-        graphics.blit(LOCATION, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        graphics.blit(RenderType::guiTextured, LOCATION, leftPos, topPos, 0, 0, imageWidth, imageHeight, 256, 256);
         {
             // red = 176, 0;  start = 61, 16;
             int oneBox = 18;
@@ -31,7 +32,7 @@ public final class PlacerScreen extends AbstractContainerScreen<PlacerContainer>
             int y = 16 + (getMenu().tile.getLastPlacedIndex() / 3) * oneBox;
             int pX = leftPos + x;
             int pY = topPos + y;
-            graphics.blit(LOCATION, pX, pY, 176, 0, oneBox, oneBox);
+            graphics.blit(RenderType::guiTextured, LOCATION, pX, pY, 176, 0, oneBox, oneBox, 256, 256);
         }
     }
 
