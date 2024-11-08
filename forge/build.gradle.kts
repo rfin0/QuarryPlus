@@ -120,7 +120,7 @@ dependencies {
     runtimeOnly(variantOf(libs.slp.forge) { classifier("with-library") }) {
         isTransitive = false
     }
-    runtimeOnly(libs.jei.forge)
+    // runtimeOnly(libs.jei.forge)
     implementation(libs.du.forge) {
         isTransitive = false
     }

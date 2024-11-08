@@ -11,24 +11,28 @@ import net.minecraftforge.common.crafting.conditions.{AndCondition, ICondition}
 import java.util.concurrent.CompletableFuture
 import scala.jdk.javaapi.CollectionConverters
 
-final class RecipeForge(output: PackOutput, registries: CompletableFuture[HolderLookup.Provider]) extends DataProvider {
-  private final val ip = IngredientProviderForge()
-  private final val internal = Recipe(ip, output, registries)
+class RecipeForge(output: PackOutput, registries: CompletableFuture[HolderLookup.Provider]) extends DataProvider {
 
   override def run(pOutput: CachedOutput): CompletableFuture[?] = {
     val recipePathProvider = output.createRegistryElementsPathProvider(Registries.RECIPE)
     val advancementPathProvider = output.createRegistryElementsPathProvider(Registries.ADVANCEMENT)
 
     registries.thenApplyAsync[CollectRecipe] { provider =>
-      val collector = CollectRecipe(provider)
-      internal.buildRecipes(collector)
+      val ip = new IngredientProviderForge(provider.lookupOrThrow(Registries.ITEM))
+
+      given collector: CollectRecipe = CollectRecipe(provider)
+
+      given p: HolderLookup.Provider = provider
+
+      val internal = Recipe(ip)
+      internal.buildRecipes()
       collector
     }.thenCompose { collected =>
       val registryOps = collected.registry().createSerializationContext(JsonOps.INSTANCE)
       val recipeFeatures = collected.getSavedRecipes.map { (id, recipe, conditions) =>
         val json = net.minecraft.world.item.crafting.Recipe.CODEC.encodeStart(registryOps, recipe).getOrThrow().getAsJsonObject
         saveConditions(registryOps, conditions, json)
-        val path = recipePathProvider.json(id)
+        val path = recipePathProvider.json(id.location())
         DataProvider.saveStable(pOutput, json, path)
       }
 

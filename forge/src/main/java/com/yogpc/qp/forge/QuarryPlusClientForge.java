@@ -12,6 +12,8 @@ import com.yogpc.qp.machine.placer.PlacerScreen;
 import com.yogpc.qp.machine.storage.DebugStorageScreen;
 import com.yogpc.qp.render.*;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -39,6 +41,14 @@ public final class QuarryPlusClientForge {
         MenuScreens.register(PlatformAccessForge.RegisterObjectsForge.ADV_QUARRY_MENU_TYPE.get(), AdvQuarryScreen::new);
         MenuScreens.register(PlatformAccessForge.RegisterObjectsForge.FILTER_MODULE_MENU_TYPE.get(), FilterModuleScreen::new);
         MenuScreens.register(PlatformAccessForge.RegisterObjectsForge.PLACER_MENU_TYPE.get(), PlacerScreen::new);
+        setRenderLayer();
         QuarryPlus.LOGGER.info("Initialize Client finished");
+    }
+
+    @SuppressWarnings("deprecation")
+    private static void setRenderLayer() {
+        // Loading from JSON is now broken in Forge?
+        ItemBlockRenderTypes.setRenderLayer(PlatformAccessForge.RegisterObjectsForge.BLOCK_FRAME.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(PlatformAccessForge.RegisterObjectsForge.BLOCK_SOFT.get(), RenderType.cutout());
     }
 }

@@ -45,7 +45,7 @@ jobs:
         platform:
           - common
           - fabric
-          # - forge
+          - forge
           - neoforge
     env:
       DISABLE_FORGE: ${{ matrix.platform != 'forge' }}
