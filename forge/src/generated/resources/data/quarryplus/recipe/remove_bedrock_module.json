@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "d": {
-      "tag": "c:storage_blocks/diamond"
-    },
-    "m": {
-      "tag": "quarryplus:markers"
-    },
-    "o": {
-      "tag": "c:obsidians"
-    }
+    "d": "#c:storage_blocks/diamond",
+    "m": "#quarryplus:markers",
+    "o": "#c:obsidians"
   },
   "pattern": [
     "ooo",
