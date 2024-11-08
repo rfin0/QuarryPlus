@@ -19,7 +19,8 @@ import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.stats.Stat;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.RelativeMovement;
+import net.minecraft.world.entity.PositionMoveRotation;
+import net.minecraft.world.entity.Relative;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.level.LevelEvent;
@@ -74,7 +75,7 @@ public class QuarryFakePlayer {
         }
 
         @Override
-        public boolean isInvulnerableTo(DamageSource source) {
+        public boolean isInvulnerableTo(ServerLevel level, DamageSource source) {
             return true;
         }
 
@@ -153,7 +154,7 @@ public class QuarryFakePlayer {
             @Override public void handlePlayerAbilities(ServerboundPlayerAbilitiesPacket packet) { }
             @Override public void handleChangeDifficulty(ServerboundChangeDifficultyPacket packet) { }
             @Override public void handleLockDifficulty(ServerboundLockDifficultyPacket packet) { }
-            @Override public void teleport(double x, double y, double z, float yaw, float pitch, Set<RelativeMovement> relativeSet) { }
+            @Override public void teleport(PositionMoveRotation rotation, Set<Relative> relatives) { }
             @Override public void ackBlockChangesUpTo(int sequence) { }
             @Override public void handleChatCommand(ServerboundChatCommandPacket packet) { }
             @Override public void handleChatAck(ServerboundChatAckPacket packet) { }
