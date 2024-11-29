@@ -169,12 +169,12 @@ public record Area(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, D
                 if (lastReturned.getX() == maxX && lastReturned.getZ() < maxZ) {
                     return lastReturned.offset(0, 0, 1);
                 }
-                // maxX -> minX, maxZ
-                if (lastReturned.getZ() == maxZ && lastReturned.getX() > minX) {
+                // maxX -> minX, maxZ, care minZ = maxZ
+                if (lastReturned.getZ() == maxZ && lastReturned.getX() > minX && lastReturned.getZ() != minZ) {
                     return lastReturned.offset(-1, 0, 0);
                 }
-                // minX, maxZ -> minZ
-                if (lastReturned.getX() == minX && lastReturned.getZ() > minZ + 1) {
+                // minX, maxZ -> minZ, care minX = maxX
+                if (lastReturned.getX() == minX && lastReturned.getZ() > minZ + 1 && lastReturned.getX() != maxX) {
                     return lastReturned.offset(0, 0, -1);
                 }
                 if (lastReturned.getY() == minY) {
@@ -188,6 +188,27 @@ public record Area(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, D
                 }
             }
             if (minY < lastReturned.getY() && lastReturned.getY() < maxY) {
+                if (minX == maxX && minZ == maxZ) {
+                    // go to next Y
+                    return new BlockPos(minX, lastReturned.getY() + 1, maxZ);
+                }
+                if (minX == maxX) {
+                    if (lastReturned.getZ() == minZ) {
+                        // next Z
+                        return new BlockPos(minX, lastReturned.getY(), maxZ);
+                    }
+                    // go to next Y
+                    return new BlockPos(minX, lastReturned.getY() + 1, maxZ);
+                }
+                if (minZ == maxZ) {
+                    if (lastReturned.getX() == minX) {
+                        // next X
+                        return new BlockPos(maxX, lastReturned.getY(), minZ);
+                    }
+                    // go to next Y
+                    return new BlockPos(minX, lastReturned.getY() + 1, maxZ);
+                }
+
                 if (lastReturned.getX() == minX && lastReturned.getZ() == minZ) {
                     return new BlockPos(maxX, lastReturned.getY(), minZ);
                 }
@@ -209,6 +230,12 @@ public record Area(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, D
         public boolean hasNext() {
             if (lastReturned == null) {
                 return true;
+            }
+            if (minX == maxX) {
+                return !(lastReturned.getZ() == maxZ && lastReturned.getY() == maxY);
+            }
+            if (minZ == maxZ) {
+                return !(lastReturned.getX() == maxX && lastReturned.getY() == maxY);
             }
             return !(lastReturned.getX() == minX && lastReturned.getY() == maxY && lastReturned.getZ() == minZ + 1);
         }

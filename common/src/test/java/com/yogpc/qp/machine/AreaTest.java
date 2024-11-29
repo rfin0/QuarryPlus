@@ -250,6 +250,27 @@ class AreaTest {
             assertFalse(itr.hasNext());
             assertThrows(NoSuchElementException.class, itr::next);
         }
+
+        @Test
+        void finiteSameX() {
+            var itr = new Area.QuarryFramePosIterator(0, 0, 0, 0, 5, 6);
+            var list = assertTimeoutPreemptively(Duration.ofSeconds(5), () -> assertDoesNotThrow(() -> Lists.newArrayList(itr)));
+            assertEquals(13, list.size());
+        }
+
+        @Test
+        void finiteSameZ() {
+            var itr = new Area.QuarryFramePosIterator(0, 0, 0, 4, 5, 0);
+            var list = assertTimeoutPreemptively(Duration.ofSeconds(5), () -> assertDoesNotThrow(() -> Lists.newArrayList(itr)));
+            assertEquals(18, list.size());
+        }
+
+        @Test
+        void finiteSameXZ() {
+            var itr = new Area.QuarryFramePosIterator(0, 0, 0, 0, 5, 0);
+            var list = assertTimeoutPreemptively(Duration.ofSeconds(5), () -> assertDoesNotThrow(() -> Lists.newArrayList(itr)));
+            assertEquals(6, list.size());
+        }
     }
 
     @Nested
