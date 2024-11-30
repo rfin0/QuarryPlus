@@ -138,6 +138,9 @@ public record Area(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, D
     }
 
     public PickIterator<BlockPos> quarryDigPosIterator(int y) {
+        if (minX == maxX || minZ == maxZ) {
+            return PickIterator.empty();
+        }
         return new QuarryDigPosIterator(this, y);
     }
 
@@ -198,7 +201,7 @@ public record Area(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, D
                         return new BlockPos(minX, lastReturned.getY(), maxZ);
                     }
                     // go to next Y
-                    return new BlockPos(minX, lastReturned.getY() + 1, maxZ);
+                    return new BlockPos(minX, lastReturned.getY() + 1, minZ);
                 }
                 if (minZ == maxZ) {
                     if (lastReturned.getX() == minX) {
@@ -206,7 +209,7 @@ public record Area(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, D
                         return new BlockPos(maxX, lastReturned.getY(), minZ);
                     }
                     // go to next Y
-                    return new BlockPos(minX, lastReturned.getY() + 1, maxZ);
+                    return new BlockPos(minX, lastReturned.getY() + 1, minZ);
                 }
 
                 if (lastReturned.getX() == minX && lastReturned.getZ() == minZ) {

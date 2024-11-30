@@ -255,7 +255,7 @@ class AreaTest {
         void finiteSameX() {
             var itr = new Area.QuarryFramePosIterator(0, 0, 0, 0, 5, 6);
             var list = assertTimeoutPreemptively(Duration.ofSeconds(5), () -> assertDoesNotThrow(() -> Lists.newArrayList(itr)));
-            assertEquals(13, list.size());
+            assertEquals(22, list.size());
         }
 
         @Test
