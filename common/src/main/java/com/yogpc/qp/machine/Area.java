@@ -138,7 +138,7 @@ public record Area(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, D
     }
 
     public PickIterator<BlockPos> quarryDigPosIterator(int y) {
-        if (minX == maxX || minZ == maxZ) {
+        if (maxX - minX < 2 || maxZ - minZ < 2) {
             return PickIterator.empty();
         }
         return new QuarryDigPosIterator(this, y);

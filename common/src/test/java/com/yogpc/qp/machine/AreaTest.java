@@ -344,6 +344,24 @@ class AreaTest {
             assertEquals(new BlockPos(1, 2, 4), itr.getLastReturned());
             assertEquals(new BlockPos(1, 2, 5), itr.next());
         }
+
+        @ParameterizedTest
+        @MethodSource
+        void notEnoughSpace(Area area) {
+            var itr = area.quarryDigPosIterator(0);
+            assertNull(itr.getLastReturned());
+            assertFalse(itr.hasNext());
+        }
+
+        static Stream<Area> notEnoughSpace() {
+            return Stream.of(
+                new Area(0, 0, 0, 0, 5, 6, Direction.UP),
+                new Area(0, 0, 0, 4, 5, 0, Direction.UP),
+                new Area(0, 0, 0, 0, 5, 0, Direction.UP),
+                new Area(0, 0, 0, 1, 5, 6, Direction.UP),
+                new Area(0, 0, 0, 4, 5, 1, Direction.UP)
+            );
+        }
     }
 
     @Nested
