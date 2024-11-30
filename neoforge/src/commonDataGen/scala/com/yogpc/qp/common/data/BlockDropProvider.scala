@@ -23,6 +23,7 @@ class BlockDropProvider(registries: HolderLookup.Provider) extends BlockLootSubP
       holder.chunkMarkerBlock().get(),
       holder.generatorBlock().get(),
       holder.placerBlock().get(),
+      holder.remotePlacerBlock().get(),
     ).foreach(this.dropSelf)
 
     Seq(
