@@ -18,6 +18,7 @@ public final class RemotePlacerEntity extends AbstractPlacerTile {
         targetPos = pos.above();
     }
 
+    @NotNull
     @Override
     protected BlockPos getTargetPos() {
         return targetPos;
