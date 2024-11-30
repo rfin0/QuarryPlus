@@ -50,7 +50,7 @@ final class StateAndModelProvider extends BlockStateProvider {
         // simpleBlockAndItemCubeAll(Holder.BLOCK_BOOK_MOVER);
         // simpleBlockAndItemCubeAll(Holder.BLOCK_WORKBENCH);
         // simpleBlockAndItemCubeAll(Holder.BLOCK_CONTROLLER);
-        // simpleBlockAndItemCubeAll(Holder.BLOCK_REMOTE_PLACER);
+        simpleBlockAndItemCubeAll(PlatformAccessNeoForge.RegisterObjectsNeoForge.BLOCK_REMOTE_PLACER.get());
         simpleBlockAndItemCubeAll(PlatformAccessNeoForge.RegisterObjectsNeoForge.BLOCK_DEBUG_STORAGE.get());
         // workBlockAndItem(Holder.BLOCK_ADV_PUMP);
         // workBlockAndItem(Holder.BLOCK_EXP_PUMP);

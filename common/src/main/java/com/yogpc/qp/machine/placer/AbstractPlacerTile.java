@@ -3,12 +3,14 @@ package com.yogpc.qp.machine.placer;
 import com.yogpc.qp.PlatformAccess;
 import com.yogpc.qp.machine.QpEntity;
 import com.yogpc.qp.packet.ClientSync;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -25,10 +27,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public abstract class AbstractPlacerTile extends QpEntity
     implements ClientSync, Container {
@@ -48,6 +52,7 @@ public abstract class AbstractPlacerTile extends QpEntity
 
     private final SimpleContainer container = new PlacerContainer(this, getContainerSize());
     private int lastPlacedIndex = 0;
+    @NotNull
     public RedStoneMode redstoneMode = RedStoneMode.PULSE;
 
     protected AbstractPlacerTile(BlockPos pos, BlockState blockState) {
@@ -85,6 +90,20 @@ public abstract class AbstractPlacerTile extends QpEntity
 
     protected abstract Direction getMachineFacing();
 
+    @Override
+    public Stream<MutableComponent> checkerLogs() {
+        return Stream.concat(
+            super.checkerLogs(),
+            Stream.of(
+                detail(ChatFormatting.GREEN, "redstoneMode", redstoneMode.toString()),
+                detail(ChatFormatting.GREEN, "Target", getTargetPos().toShortString()),
+                detail(ChatFormatting.GREEN, "Facing", String.valueOf(getMachineFacing())),
+                detail(ChatFormatting.GREEN, "isPowered", String.valueOf(isPowered())),
+                detail(ChatFormatting.GREEN, "lastPlacedIndex in inv", String.valueOf(getLastPlacedIndex()))
+            )
+        );
+    }
+
     protected boolean isPowered() {
         assert level != null;
         return Arrays.stream(Direction.values()).filter(Predicate.isEqual(getMachineFacing()).negate())
@@ -94,6 +113,8 @@ public abstract class AbstractPlacerTile extends QpEntity
     void breakBlock() {
         if (level == null || !redstoneMode.canBreak()) return;
         BlockPos pos = getTargetPos();
+        // Not to remove the placer itself
+        if (pos.equals(getBlockPos())) return;
         BlockState state = level.getBlockState(pos);
         if (state.getDestroySpeed(level, pos) < 0) return; // Unbreakable.
         Player fake = PlatformAccess.getAccess().mining().getQuarryFakePlayer(this, (ServerLevel) level, pos);
@@ -112,6 +133,8 @@ public abstract class AbstractPlacerTile extends QpEntity
         if (isEmpty() || !redstoneMode.canPlace()) return false;
         Direction facing = getMachineFacing();
         BlockPos pos = getTargetPos();
+        // Not to remove the placer itself
+        if (pos.equals(getBlockPos())) return false;
         Vec3 hitPos = DIRECTION_VEC3D_MAP.get(facing.getOpposite()).add(pos.getX(), pos.getY(), pos.getZ());
         BlockHitResult rayTrace = new BlockHitResult(hitPos, facing.getOpposite(), pos, false);
         Player fake = PlatformAccess.getAccess().mining().getQuarryFakePlayer(this, (ServerLevel) level, pos);

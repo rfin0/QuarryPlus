@@ -205,10 +205,21 @@ class Recipe(ingredientProvider: IngredientProvider, output: PackOutput, registr
       .define('I', ip.ironIngot)
       .define('M', Items.MOSSY_COBBLESTONE)
       .define('G', ip.goldIngot)
+      .define('m', ip.marker)
       .pattern("GDG")
       .pattern("MRM")
-      .pattern("MIM")
+      .pattern("MIm")
       .unlockedBy(Items.DISPENSER)
+      .save(recipeOutput)
+
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, PlatformAccess.getAccess.registerObjects().remotePlacerBlock().get())
+      .define('e', ip.enderPearl)
+      .define('i', ip.ironIngot)
+      .define('d', ip.diamond)
+      .define('p', PlatformAccess.getAccess.registerObjects().placerBlock().get())
+      .pattern("eie")
+      .pattern("dpd")
+      .unlockedBy(PlatformAccess.getAccess.registerObjects().placerBlock().get())
       .save(recipeOutput)
   }
 

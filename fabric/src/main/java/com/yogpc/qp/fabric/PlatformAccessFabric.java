@@ -26,9 +26,7 @@ import com.yogpc.qp.machine.module.*;
 import com.yogpc.qp.machine.mover.MoverBlock;
 import com.yogpc.qp.machine.mover.MoverContainer;
 import com.yogpc.qp.machine.mover.MoverEntity;
-import com.yogpc.qp.machine.placer.PlacerBlock;
-import com.yogpc.qp.machine.placer.PlacerContainer;
-import com.yogpc.qp.machine.placer.PlacerEntity;
+import com.yogpc.qp.machine.placer.*;
 import com.yogpc.qp.machine.quarry.QuarryBlock;
 import com.yogpc.qp.machine.storage.DebugStorageBlock;
 import com.yogpc.qp.machine.storage.DebugStorageContainer;
@@ -113,6 +111,8 @@ public final class PlatformAccessFabric implements PlatformAccess, ServerLifecyc
         public static final PlacerBlock PLACER_BLOCK = new PlacerBlock();
         public static final BlockEntityType<PlacerEntity> PLACER_ENTITY_TYPE = BlockEntityType.Builder.of(PlacerEntity::new, PLACER_BLOCK).build(DSL.emptyPartType());
         public static final MenuType<PlacerContainer> PLACER_MENU_TYPE = new ExtendedScreenHandlerType<>(PlacerContainer::createPlacerContainer, BlockPos.STREAM_CODEC);
+        public static final RemotePlacerBlock REMOTE_PLACER_BLOCK = new RemotePlacerBlock();
+        public static final BlockEntityType<RemotePlacerEntity> REMOTE_PLACER_ENTITY_TYPE = BlockEntityType.Builder.of(RemotePlacerEntity::new, REMOTE_PLACER_BLOCK).build(DSL.emptyPartType());
         public static final MenuType<PlacerContainer> REMOTE_PLACER_MENU_TYPE = new ExtendedScreenHandlerType<>(PlacerContainer::createRemotePlacerContainer, BlockPos.STREAM_CODEC);
 
         public static final LootItemFunctionType<MachineLootFunction> MACHINE_LOOT_FUNCTION = new LootItemFunctionType<>(MachineLootFunction.SERIALIZER);
@@ -133,6 +133,7 @@ public final class PlatformAccessFabric implements PlatformAccess, ServerLifecyc
             registerEntityBlock(GENERATOR_BLOCK, GENERATOR_ENTITY_TYPE, EnableMap.EnableOrNot.ALWAYS_ON);
             registerEntityBlock(MOVER_BLOCK, MOVER_ENTITY_TYPE, EnableMap.EnableOrNot.CONFIG_ON);
             registerEntityBlock(PLACER_BLOCK, PLACER_ENTITY_TYPE, EnableMap.EnableOrNot.CONFIG_ON);
+            registerEntityBlock(REMOTE_PLACER_BLOCK, REMOTE_PLACER_ENTITY_TYPE, EnableMap.EnableOrNot.CONFIG_OFF);
             // Marker
             registerEntityBlock(MARKER_BLOCK, MARKER_ENTITY_TYPE, EnableMap.EnableOrNot.ALWAYS_ON);
             registerEntityBlock(FLEXIBLE_MARKER_BLOCK, FLEXIBLE_MARKER_ENTITY_TYPE, EnableMap.EnableOrNot.CONFIG_ON);
@@ -253,6 +254,11 @@ public final class PlatformAccessFabric implements PlatformAccess, ServerLifecyc
         @Override
         public Supplier<? extends PlacerBlock> placerBlock() {
             return Lazy.value(PLACER_BLOCK);
+        }
+
+        @Override
+        public Supplier<? extends RemotePlacerBlock> remotePlacerBlock() {
+            return Lazy.value(REMOTE_PLACER_BLOCK);
         }
 
         @Override

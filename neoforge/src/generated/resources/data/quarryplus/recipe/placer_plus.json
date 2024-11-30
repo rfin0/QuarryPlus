@@ -16,12 +16,15 @@
     },
     "R": {
       "tag": "c:dusts/redstone"
+    },
+    "m": {
+      "tag": "quarryplus:markers"
     }
   },
   "pattern": [
     "GDG",
     "MRM",
-    "MIM"
+    "MIm"
   ],
   "result": {
     "count": 1,
