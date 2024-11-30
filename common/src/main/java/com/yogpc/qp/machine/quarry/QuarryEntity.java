@@ -145,7 +145,7 @@ public abstract class QuarryEntity extends PowerEntity implements ClientSync {
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         toClientTag(tag, registries);
-        if (targetIterator != null) {
+        if (targetIterator != null && targetIterator.getLastReturned() != null) {
             tag.put("targetPos", BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, targetIterator.getLastReturned()).getOrThrow());
         }
         tag.put("storage", MachineStorage.CODEC.codec().encodeStart(NbtOps.INSTANCE, storage).getOrThrow());
@@ -433,7 +433,10 @@ public abstract class QuarryEntity extends PowerEntity implements ClientSync {
      */
     private boolean setNextDigTargetIterator() {
         if (targetPos == null) {
-            throw new IllegalStateException("Target pos is null");
+            QuarryPlus.LOGGER.error("setNextDigTargetIterator: targetPos is null. Area: {}, Iterator: {}", this.area, this.targetIterator);
+            // Finish this invalid work
+            setState(QuarryState.FINISHED, getBlockState());
+            return true;
         }
         assert area != null;
         assert level != null;

@@ -250,6 +250,27 @@ class AreaTest {
             assertFalse(itr.hasNext());
             assertThrows(NoSuchElementException.class, itr::next);
         }
+
+        @Test
+        void finiteSameX() {
+            var itr = new Area.QuarryFramePosIterator(0, 0, 0, 0, 5, 6);
+            var list = assertTimeoutPreemptively(Duration.ofSeconds(5), () -> assertDoesNotThrow(() -> Lists.newArrayList(itr)));
+            assertEquals(22, list.size());
+        }
+
+        @Test
+        void finiteSameZ() {
+            var itr = new Area.QuarryFramePosIterator(0, 0, 0, 4, 5, 0);
+            var list = assertTimeoutPreemptively(Duration.ofSeconds(5), () -> assertDoesNotThrow(() -> Lists.newArrayList(itr)));
+            assertEquals(18, list.size());
+        }
+
+        @Test
+        void finiteSameXZ() {
+            var itr = new Area.QuarryFramePosIterator(0, 0, 0, 0, 5, 0);
+            var list = assertTimeoutPreemptively(Duration.ofSeconds(5), () -> assertDoesNotThrow(() -> Lists.newArrayList(itr)));
+            assertEquals(6, list.size());
+        }
     }
 
     @Nested
@@ -322,6 +343,24 @@ class AreaTest {
             assertEquals(new BlockPos(1, 2, 4), itr.next());
             assertEquals(new BlockPos(1, 2, 4), itr.getLastReturned());
             assertEquals(new BlockPos(1, 2, 5), itr.next());
+        }
+
+        @ParameterizedTest
+        @MethodSource
+        void notEnoughSpace(Area area) {
+            var itr = area.quarryDigPosIterator(0);
+            assertNull(itr.getLastReturned());
+            assertFalse(itr.hasNext());
+        }
+
+        static Stream<Area> notEnoughSpace() {
+            return Stream.of(
+                new Area(0, 0, 0, 0, 5, 6, Direction.UP),
+                new Area(0, 0, 0, 4, 5, 0, Direction.UP),
+                new Area(0, 0, 0, 0, 5, 0, Direction.UP),
+                new Area(0, 0, 0, 1, 5, 6, Direction.UP),
+                new Area(0, 0, 0, 4, 5, 1, Direction.UP)
+            );
         }
     }
 

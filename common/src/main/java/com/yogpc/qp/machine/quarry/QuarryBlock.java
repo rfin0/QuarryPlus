@@ -1,5 +1,6 @@
 package com.yogpc.qp.machine.quarry;
 
+import com.yogpc.qp.QuarryPlus;
 import com.yogpc.qp.machine.*;
 import com.yogpc.qp.machine.marker.QuarryMarker;
 import net.minecraft.ChatFormatting;
@@ -122,7 +123,21 @@ public abstract class QuarryBlock extends QpEntityBlock {
                             var area = new Area(corner1, corner2, facing.getOpposite());
                             return new QuarryMarker.StaticLink(area);
                         });
-                    quarry.setArea(Area.assumeY(markerLink.area()));
+                    var area = Area.assumeY(markerLink.area());
+                    if (!area.quarryDigPosIterator(pos.getY()).hasNext()) {
+                        // Invalid area
+                        QuarryPlus.LOGGER.warn(QuarryEntity.MARKER,
+                            "The area for quarry({}) doesn't have enough space for work. Area: {}",
+                            pos.toShortString(),
+                            area
+                        );
+                        if (placer instanceof Player p) {
+                            var text = "This Quarry doesn't have enough space for work";
+                            p.displayClientMessage(Component.literal(text).withStyle(ChatFormatting.RED), false);
+                        }
+                        return;
+                    }
+                    quarry.setArea(area);
                     markerLink.drops().forEach(quarry.storage::addItem);
                     markerLink.remove(level);
                 }

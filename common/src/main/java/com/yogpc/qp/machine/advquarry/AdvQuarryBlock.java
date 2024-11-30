@@ -1,8 +1,10 @@
 package com.yogpc.qp.machine.advquarry;
 
 import com.yogpc.qp.PlatformAccess;
+import com.yogpc.qp.QuarryPlus;
 import com.yogpc.qp.machine.*;
 import com.yogpc.qp.machine.marker.QuarryMarker;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -118,7 +120,21 @@ public class AdvQuarryBlock extends QpEntityBlock {
                             // set initial area
                             return new QuarryMarker.StaticLink(createDefaultArea(pos, facing, 0));
                         });
-                    quarry.setArea(Area.assumeY(markerLink.area()));
+                    var area = Area.assumeY(markerLink.area());
+                    if (!area.quarryDigPosIterator(pos.getY()).hasNext()) {
+                        // Invalid area
+                        QuarryPlus.LOGGER.warn(
+                            "The area for machine({}) doesn't have enough space for work. Area: {}",
+                            pos.toShortString(),
+                            area
+                        );
+                        if (placer instanceof Player p) {
+                            var text = "This machine doesn't have enough space for work";
+                            p.displayClientMessage(Component.literal(text).withStyle(ChatFormatting.RED), false);
+                        }
+                        return;
+                    }
+                    quarry.setArea(area);
                     markerLink.drops().forEach(quarry.storage::addItem);
                     markerLink.remove(level);
                 }
