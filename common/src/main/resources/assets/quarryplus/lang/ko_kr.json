@@ -45,7 +45,7 @@
   "chat.flexiblemarker.reset": "컨트롤러 구성 초기화.",
   "config.jade.plugin_quarryplus.jade_plugin": "QuarryPlus Plugin",
   "container.yog.basic": "기계 버퍼",
-  "enchantment.quarryplus.quary_pickaxe": "Quarry Enchantment",
+  "enchantment.quarryplus.quarry_pickaxe": "Quarry Enchantment",
   "gui.apply": "적용",
   "gui.buildAdvFrame": "고급 프레임 건설",
   "gui.fortuneList": "행운 블록 목록",
