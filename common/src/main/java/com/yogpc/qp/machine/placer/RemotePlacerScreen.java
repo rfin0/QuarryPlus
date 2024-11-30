@@ -39,13 +39,25 @@ public final class RemotePlacerScreen extends AbstractContainerScreen<PlacerCont
     }
 
     @Override
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        super.renderLabels(guiGraphics, mouseX, mouseY);
+        var targetPos = getMenu().tile.getTargetPos();
+        var color = targetPos.equals(getMenu().tile.getBlockPos()) ? 0xFF4040 : 0x404040;
+        var x = 99;
+        // 118, 22
+        guiGraphics.drawString(font, "X: " + targetPos.getX(), x, 22, color, false);
+        guiGraphics.drawString(font, "Y: " + targetPos.getY(), x, 40, color, false);
+        guiGraphics.drawString(font, "Z: " + targetPos.getZ(), x, 58, color, false);
+    }
+
+    @Override
     protected void init() {
         super.init();
         for (int i = 0; i < Direction.Axis.VALUES.length; i++) {
             var yPos = topPos + 21 + i * 18;
             this.addRenderableWidget(
                 Button.builder(Component.literal("-"), onPress(Direction.Axis.VALUES[i], Direction.AxisDirection.NEGATIVE))
-                    .pos(leftPos + 97, yPos)
+                    .pos(leftPos + 80, yPos)
                     .size(18, 9)
                     .build()
             );
