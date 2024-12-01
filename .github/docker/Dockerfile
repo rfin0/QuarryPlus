@@ -12,7 +12,7 @@ EOF
 
 ENV GRADLE_USER_HOME=/gradle-global
 
-COPY init.gradle /root/.gradle/init.gradle
+COPY init.gradle /gradle-global/change_build_dir.init.gradle
 
 WORKDIR /root
 
