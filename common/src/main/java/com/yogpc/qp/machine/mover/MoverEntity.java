@@ -20,6 +20,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.block.state.BlockState;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.VisibleForTesting;
 
@@ -83,6 +84,9 @@ public final class MoverEntity extends QpEntity implements ClientSync {
         public boolean canPlaceItem(int slot, ItemStack stack) {
             return switch (slot) {
                 case 0 -> {
+                    if (stack.getItem() instanceof EnchantedBookItem) {
+                        yield true;
+                    }
                     if (!stack.isEnchanted()) {
                         yield false;
                     }
@@ -145,34 +149,44 @@ public final class MoverEntity extends QpEntity implements ClientSync {
     }
 
     void moveEnchant(Holder<Enchantment> enchantment) {
-        moveEnchantment(enchantment, inventory.getItem(0), inventory.getItem(1), this::updateMovableEnchantments);
+        var moved = moveEnchantment(enchantment, inventory.getItem(0), inventory.getItem(1), this::updateMovableEnchantments);
+        inventory.setItem(0, moved.getLeft());
+        inventory.setItem(1, moved.getRight());
     }
 
-    static void moveEnchantment(@Nullable Holder<Enchantment> enchantment, ItemStack from, ItemStack to, Runnable after) {
-        moveEnchantment(enchantment, from, to, null, after);
+    static Pair<ItemStack, ItemStack> moveEnchantment(@Nullable Holder<Enchantment> enchantment, ItemStack from, ItemStack to, Runnable after) {
+        return moveEnchantment(enchantment, from, to, null, after);
     }
 
     @VisibleForTesting
-    static void moveEnchantment(@Nullable Holder<Enchantment> enchantment, ItemStack from, ItemStack to, @Nullable Predicate<Holder<Enchantment>> predicate, Runnable after) {
-        if (enchantment == null || from.isEmpty() || to.isEmpty()) return;
+    static Pair<ItemStack, ItemStack> moveEnchantment(@Nullable Holder<Enchantment> enchantment, ItemStack from, ItemStack to, @Nullable Predicate<Holder<Enchantment>> predicate, Runnable after) {
+        if (enchantment == null || from.isEmpty() || to.isEmpty()) return Pair.of(from, to);
         if (canMoveEnchantment(predicate, EnchantmentHelper.getEnchantmentsForCrafting(to), enchantment)) {
-            upLevel(enchantment, to);
-            downLevel(enchantment, from);
+            var right = upLevel(enchantment, to);
+            var left = downLevel(enchantment, from);
             after.run();
+            return Pair.of(left, right);
         }
+        return Pair.of(from, to);
     }
 
     @VisibleForTesting
-    static void downLevel(Holder<Enchantment> enchantment, ItemStack stack) {
+    static ItemStack downLevel(Holder<Enchantment> enchantment, ItemStack stack) {
         EnchantmentHelper.updateEnchantments(stack, mutable ->
             mutable.set(enchantment, mutable.getLevel(enchantment) - 1)
         );
+        if (stack.is(Items.ENCHANTED_BOOK) && EnchantmentHelper.getEnchantmentsForCrafting(stack).isEmpty()) {
+            // Remove empty enchanted book
+            return ItemStack.EMPTY;
+        }
+        return stack;
     }
 
     @VisibleForTesting
-    static void upLevel(Holder<Enchantment> enchantment, ItemStack stack) {
+    static ItemStack upLevel(Holder<Enchantment> enchantment, ItemStack stack) {
         EnchantmentHelper.updateEnchantments(stack, mutable ->
             mutable.set(enchantment, mutable.getLevel(enchantment) + 1)
         );
+        return stack;
     }
 }

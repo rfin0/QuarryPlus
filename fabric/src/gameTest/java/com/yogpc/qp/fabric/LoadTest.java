@@ -47,6 +47,7 @@ public final class LoadTest implements FabricGameTest {
             field.setAccessible(true);
             var map = (Map<Class<?>, String>) field.get(null);
             map.put(LoadTest.class, QuarryPlus.modID);
+            map.put(EnchantmentTest.class, QuarryPlus.modID);
 
             GameTestRegistry.register(LoadTest.class);
             QuarryPlus.LOGGER.info("Registered GameTest for Fabric");

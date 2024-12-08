@@ -17,9 +17,7 @@ import com.yogpc.qp.machine.module.*;
 import com.yogpc.qp.machine.mover.MoverBlock;
 import com.yogpc.qp.machine.mover.MoverContainer;
 import com.yogpc.qp.machine.mover.MoverEntity;
-import com.yogpc.qp.machine.placer.PlacerBlock;
-import com.yogpc.qp.machine.placer.PlacerContainer;
-import com.yogpc.qp.machine.placer.PlacerEntity;
+import com.yogpc.qp.machine.placer.*;
 import com.yogpc.qp.machine.quarry.QuarryBlock;
 import com.yogpc.qp.machine.storage.DebugStorageBlock;
 import com.yogpc.qp.machine.storage.DebugStorageContainer;
@@ -92,6 +90,7 @@ public final class PlatformAccessNeoForge implements PlatformAccess {
         public static final DeferredBlock<GeneratorBlock> BLOCK_GENERATOR = registerBlock(GeneratorBlock.NAME, GeneratorBlock::new);
         public static final DeferredBlock<MoverBlock> BLOCK_MOVER = registerBlock(MoverBlock.NAME, MoverBlock::new);
         public static final DeferredBlock<PlacerBlock> BLOCK_PLACER = registerBlock(PlacerBlock.NAME, PlacerBlock::new);
+        public static final DeferredBlock<RemotePlacerBlock> BLOCK_REMOTE_PLACER = registerBlock(RemotePlacerBlock.NAME, RemotePlacerBlock::new);
         // Marker
         public static final DeferredBlock<NormalMarkerBlock> BLOCK_MARKER = registerBlock(NormalMarkerBlock.NAME, NormalMarkerBlock::new);
         public static final DeferredBlock<FlexibleMarkerBlock> BLOCK_FLEXIBLE_MARKER = registerBlock(FlexibleMarkerBlock.NAME, FlexibleMarkerBlock::new);
@@ -119,6 +118,7 @@ public final class PlatformAccessNeoForge implements PlatformAccess {
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DebugStorageEntity>> DEBUG_STORAGE_TYPE = registerBlockEntity(DebugStorageBlock.NAME, BLOCK_DEBUG_STORAGE, DebugStorageEntity::new, EnableMap.EnableOrNot.ALWAYS_ON);
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AdvQuarryEntityNeoForge>> ADV_QUARRY_ENTITY_TYPE = registerBlockEntity(AdvQuarryBlock.NAME, BLOCK_ADV_QUARRY, AdvQuarryEntityNeoForge::new, EnableMap.EnableOrNot.CONFIG_ON);
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PlacerEntity>> PLACER_ENTITY_TYPE = registerBlockEntity(PlacerBlock.NAME, BLOCK_PLACER, PlacerEntity::new, EnableMap.EnableOrNot.CONFIG_ON);
+        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RemotePlacerEntity>> REMOTE_PLACER_ENTITY_TYPE = registerBlockEntity(RemotePlacerBlock.NAME, BLOCK_REMOTE_PLACER, RemotePlacerEntity::new, EnableMap.EnableOrNot.CONFIG_OFF);
 
         public static final DeferredHolder<CreativeModeTab, CreativeModeTab> CREATIVE_MODE_TAB = CREATIVE_TAB_REGISTER.register(QuarryPlus.modID, () -> QuarryPlus.buildCreativeModeTab(CreativeModeTab.builder()).build());
         public static final DeferredHolder<MenuType<?>, MenuType<? extends YSetterContainer>> Y_SET_MENU_TYPE = registerMenu("gui_y_setter", YSetterContainer::new);
@@ -228,6 +228,11 @@ public final class PlatformAccessNeoForge implements PlatformAccess {
         @Override
         public Supplier<? extends PlacerBlock> placerBlock() {
             return BLOCK_PLACER;
+        }
+
+        @Override
+        public Supplier<? extends RemotePlacerBlock> remotePlacerBlock() {
+            return BLOCK_REMOTE_PLACER;
         }
 
         @Override

@@ -20,6 +20,7 @@ import com.yogpc.qp.machine.mover.MoverBlock;
 import com.yogpc.qp.machine.mover.MoverContainer;
 import com.yogpc.qp.machine.placer.PlacerBlock;
 import com.yogpc.qp.machine.placer.PlacerContainer;
+import com.yogpc.qp.machine.placer.RemotePlacerBlock;
 import com.yogpc.qp.machine.quarry.QuarryBlock;
 import com.yogpc.qp.machine.storage.DebugStorageBlock;
 import com.yogpc.qp.machine.storage.DebugStorageContainer;
@@ -85,6 +86,8 @@ public interface PlatformAccess {
         Supplier<? extends SoftBlock> softBlock();
 
         Supplier<? extends PlacerBlock> placerBlock();
+
+        Supplier<? extends RemotePlacerBlock> remotePlacerBlock();
 
         Optional<BlockEntityType<?>> getBlockEntityType(QpBlock block);
 

@@ -8,6 +8,7 @@ import com.yogpc.qp.machine.advquarry.AdvQuarryInitialAskMessage;
 import com.yogpc.qp.machine.marker.ChunkMarkerMessage;
 import com.yogpc.qp.machine.marker.FlexibleMarkerMessage;
 import com.yogpc.qp.machine.mover.MoverMessage;
+import com.yogpc.qp.machine.placer.RemotePlacerMessage;
 import com.yogpc.qp.packet.ClientSyncMessage;
 import com.yogpc.qp.packet.OnReceiveWithLevel;
 import com.yogpc.qp.packet.YSetterMessage;
@@ -73,6 +74,11 @@ public final class PacketHandler implements PlatformAccess.Packet {
         registrar.playToClient(
             AdvQuarryInitialAskMessage.TYPE,
             AdvQuarryInitialAskMessage.STREAM_CODEC,
+            PacketHandler::onReceive
+        );
+        registrar.playToServer(
+            RemotePlacerMessage.TYPE,
+            RemotePlacerMessage.STREAM_CODEC,
             PacketHandler::onReceive
         );
     }

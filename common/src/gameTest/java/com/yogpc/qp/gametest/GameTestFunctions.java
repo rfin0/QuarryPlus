@@ -5,6 +5,7 @@ import com.yogpc.qp.machine.DebugStorageTest;
 import com.yogpc.qp.machine.advquarry.PlaceAdvQuarryTest;
 import com.yogpc.qp.machine.mover.PlaceMoverTest;
 import com.yogpc.qp.machine.placer.PlacerTest;
+import com.yogpc.qp.machine.placer.RemotePlacerTest;
 import com.yogpc.qp.machine.quarry.PlaceQuarryTest;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -53,6 +54,7 @@ public final class GameTestFunctions {
         return Stream.of(
             CheckBlockDropTest.checkDrops(batchName, structureName),
             PlacerTest.tests(batchName, structureName),
+            RemotePlacerTest.tests(batchName, structureName),
             fromClass
         ).flatMap(Function.identity()).toList();
     }
