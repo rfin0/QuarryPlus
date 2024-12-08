@@ -6,12 +6,13 @@
     "G": "#c:ingots/gold",
     "I": "#c:ingots/iron",
     "M": "minecraft:mossy_cobblestone",
-    "R": "#c:dusts/redstone"
+    "R": "#c:dusts/redstone",
+    "m": "#quarryplus:markers"
   },
   "pattern": [
     "GDG",
     "MRM",
-    "MIM"
+    "MIm"
   ],
   "result": {
     "count": 1,

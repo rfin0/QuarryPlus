@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "d": {
-      "tag": "c:gems/diamond"
-    },
-    "e": {
-      "tag": "c:ender_pearls"
-    },
-    "i": {
-      "tag": "c:ingots/iron"
-    },
-    "p": {
-      "item": "quarryplus:placer_plus"
-    }
+    "d": "#c:gems/diamond",
+    "e": "#c:ender_pearls",
+    "i": "#c:ingots/iron",
+    "p": "quarryplus:placer_plus"
   },
   "pattern": [
     "eie",
