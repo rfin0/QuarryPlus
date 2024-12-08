@@ -7,9 +7,9 @@ import com.yogpc.qp.recipe.InstallBedrockModuleRecipe
 import com.yogpc.qp.{PlatformAccess, QuarryPlus}
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.{BuiltInRegistries, Registries}
-import net.minecraft.data.recipes.{RecipeCategory, RecipeOutput, RecipeProvider}
+import net.minecraft.data.recipes.{RecipeCategory, RecipeOutput}
 import net.minecraft.resources.{ResourceKey, ResourceLocation}
-import net.minecraft.world.item.crafting.{Ingredient, Recipe as McRecipe}
+import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.{Item, Items}
 
 class Recipe(ingredientProvider: IngredientProvider)(using recipeOutput: RecipeOutput, registries: HolderLookup.Provider) extends RecipeProvider(registries, recipeOutput) {
@@ -208,7 +208,7 @@ class Recipe(ingredientProvider: IngredientProvider)(using recipeOutput: RecipeO
       .unlockedBy(Items.DISPENSER)
       .save(recipeOutput)
 
-    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, PlatformAccess.getAccess.registerObjects().remotePlacerBlock().get())
+    shaped(RecipeCategory.MISC, PlatformAccess.getAccess.registerObjects().remotePlacerBlock().get())
       .define('e', ip.enderPearl)
       .define('i', ip.ironIngot)
       .define('d', ip.diamond)

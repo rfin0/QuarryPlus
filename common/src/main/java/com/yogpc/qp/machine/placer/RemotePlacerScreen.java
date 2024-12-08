@@ -5,6 +5,7 @@ import com.yogpc.qp.QuarryPlus;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -27,14 +28,14 @@ public final class RemotePlacerScreen extends AbstractContainerScreen<PlacerCont
 
     @Override
     protected void renderBg(GuiGraphics graphics, float delta, int mouseX, int mouseY) {
-        graphics.blit(LOCATION, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        graphics.blit(RenderType::guiTextured, LOCATION, leftPos, topPos, 0, 0, imageWidth, imageHeight, 256, 256);
         {
             int oneBox = 18;
             int x = getMenu().startX - 1 + (getMenu().tile.getLastPlacedIndex() % 3) * oneBox;
             int y = 16 + (getMenu().tile.getLastPlacedIndex() / 3) * oneBox;
             int pX = leftPos + x;
             int pY = topPos + y;
-            graphics.blit(LOCATION, pX, pY, 176, 0, oneBox, oneBox);
+            graphics.blit(RenderType::guiTextured, LOCATION, pX, pY, 176, 0, oneBox, oneBox, 256, 256);
         }
     }
 

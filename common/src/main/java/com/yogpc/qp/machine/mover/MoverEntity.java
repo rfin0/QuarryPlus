@@ -84,7 +84,7 @@ public final class MoverEntity extends QpEntity implements ClientSync {
         public boolean canPlaceItem(int slot, ItemStack stack) {
             return switch (slot) {
                 case 0 -> {
-                    if (stack.getItem() instanceof EnchantedBookItem) {
+                    if (stack.is(Items.ENCHANTED_BOOK)) {
                         yield true;
                     }
                     if (!stack.isEnchanted()) {
