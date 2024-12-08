@@ -7,9 +7,9 @@ import com.yogpc.qp.recipe.InstallBedrockModuleRecipe
 import com.yogpc.qp.{PlatformAccess, QuarryPlus}
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.{BuiltInRegistries, Registries}
-import net.minecraft.data.recipes.{RecipeCategory, RecipeOutput}
+import net.minecraft.data.recipes.{RecipeCategory, RecipeOutput, RecipeProvider}
 import net.minecraft.resources.{ResourceKey, ResourceLocation}
-import net.minecraft.world.item.crafting.Ingredient
+import net.minecraft.world.item.crafting.{Ingredient, Recipe as McRecipe}
 import net.minecraft.world.item.{Item, Items}
 
 class Recipe(ingredientProvider: IngredientProvider)(using recipeOutput: RecipeOutput, registries: HolderLookup.Provider) extends RecipeProvider(registries, recipeOutput) {

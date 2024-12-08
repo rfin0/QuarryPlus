@@ -3,9 +3,9 @@ package com.yogpc.qp.machine.mover;
 import com.yogpc.qp.PlatformAccess;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestHelper;
-import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.GameType;
@@ -97,7 +97,7 @@ public final class PlaceMoverTest {
         MoverEntity mover = helper.getBlockEntity(base);
 
         var enchantment = getEnchantment(helper, Enchantments.EFFICIENCY);
-        var stack = EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantment, 1));
+        var stack = EnchantmentHelper.createBook(new EnchantmentInstance(enchantment, 1));
         var quarry = new ItemStack(PlatformAccess.getAccess().registerObjects().quarryBlock().get());
         mover.inventory.setItem(0, stack);
         mover.inventory.setItem(1, quarry);
