@@ -3,8 +3,10 @@ package com.yogpc.qp.machine.mover;
 import com.yogpc.qp.PlatformAccess;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.GameType;
 
@@ -87,6 +89,25 @@ public final class PlaceMoverTest {
         helper.assertItemEntityPresent(PlatformAccess.getAccess().registerObjects().moverBlock().get().blockItem, base, 4);
         helper.assertItemEntityPresent(Items.DIAMOND_PICKAXE, base, 4);
         helper.assertItemEntityPresent(PlatformAccess.getAccess().registerObjects().quarryBlock().get().blockItem, base, 4);
+        helper.succeed();
+    }
+
+    public static void moveFromEnchantedBook(GameTestHelper helper) {
+        helper.setBlock(base, PlatformAccess.getAccess().registerObjects().moverBlock().get());
+        MoverEntity mover = helper.getBlockEntity(base);
+
+        var enchantment = getEnchantment(helper, Enchantments.EFFICIENCY);
+        var stack = EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantment, 1));
+        var quarry = new ItemStack(PlatformAccess.getAccess().registerObjects().quarryBlock().get());
+        mover.inventory.setItem(0, stack);
+        mover.inventory.setItem(1, quarry);
+
+        mover.moveEnchant(enchantment);
+        assertAll(
+            () -> assertEquals(1, quarry.getEnchantments().getLevel(enchantment)),
+            () -> assertTrue(mover.inventory.getItem(0).isEmpty()),
+            () -> assertTrue(mover.movableEnchantments.isEmpty())
+        );
         helper.succeed();
     }
 }
