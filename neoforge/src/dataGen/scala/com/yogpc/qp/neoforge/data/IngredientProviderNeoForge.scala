@@ -7,7 +7,7 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.{Item, Items}
 import net.neoforged.neoforge.common.Tags
-import net.neoforged.neoforge.common.conditions.FalseCondition
+import net.neoforged.neoforge.common.conditions.NeverCondition
 
 final class IngredientProviderNeoForge(itemRegistry: HolderGetter[Item]) extends IngredientProvider(itemRegistry) {
   override def glowStoneDust: Ingredient = Ingredient.of(itemRegistry.getOrThrow(Tags.Items.DUSTS_GLOWSTONE))
@@ -35,7 +35,7 @@ final class IngredientProviderNeoForge(itemRegistry: HolderGetter[Item]) extends
   override def diamondBlock: Ingredient = Ingredient.of(itemRegistry.getOrThrow(Tags.Items.STORAGE_BLOCKS_DIAMOND))
 
   override def installBedrockModuleQuarryRecipeOutput(original: RecipeOutput): RecipeOutput = {
-    original.withConditions(FalseCondition.INSTANCE)
+    original.withConditions(NeverCondition.INSTANCE)
   }
 
   override def enderPearl: Ingredient = Ingredient.of(itemRegistry.getOrThrow(Tags.Items.ENDER_PEARLS))

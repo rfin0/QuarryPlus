@@ -23,24 +23,24 @@ class QuarryDataCommonGenerator {
 object QuarryDataCommonGenerator {
   @static
   @SubscribeEvent
-  def onEvent(event: GatherDataEvent): Unit = {
+  def onEvent(event: GatherDataEvent.Client): Unit = {
     QuarryPlus.LOGGER.info("Start common data generation")
     val enchantmentProvider = new EnchantmentProvider(event.getGenerator.getPackOutput, event.getLookupProvider)
-    event.getGenerator.addProvider(event.includeServer, enchantmentProvider)
-    event.getGenerator.addProvider(event.includeServer, new LootTableProvider(event.getGenerator.getPackOutput, Collections.emptySet(),
+    event.addProvider(enchantmentProvider)
+    event.addProvider(new LootTableProvider(event.getGenerator.getPackOutput, Collections.emptySet(),
       CollectionConverters.asJava(Seq(new LootTableProvider.SubProviderEntry(r => new BlockDropProvider(r), LootContextParamSets.BLOCK))),
       event.getLookupProvider
     ))
-    event.getGenerator.addProvider(event.includeClient, StateAndModelProvider(event.getGenerator, event.getExistingFileHelper))
-    event.getGenerator.addProvider(event.includeClient, QuarrySpriteSourceProvider(event.getGenerator.getPackOutput, event.getLookupProvider, event.getExistingFileHelper))
-    event.getGenerator.addProvider(true, PackMetadataGenerator(event.getGenerator.getPackOutput)
+    event.addProvider(StateAndModelProvider(event.getGenerator, event.getExistingFileHelper))
+    event.addProvider(QuarrySpriteSourceProvider(event.getGenerator.getPackOutput, event.getLookupProvider, event.getExistingFileHelper))
+    event.addProvider(PackMetadataGenerator(event.getGenerator.getPackOutput)
       .add(PackMetadataSection.TYPE, PackMetadataSection(Component.literal("QuarryPlus Resource"), DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES)))
     )
 
     val blockTag = QuarryBlockTagProvider(event.getGenerator.getPackOutput, event.getLookupProvider, event.getExistingFileHelper)
     val itemTag = QuarryItemTagProvider(event.getGenerator.getPackOutput, event.getLookupProvider, event.getExistingFileHelper, blockTag.contentsGetter())
-    event.getGenerator.addProvider(event.includeServer, blockTag)
-    event.getGenerator.addProvider(event.includeServer, itemTag)
-    event.getGenerator.addProvider(event.includeServer, QuarryEnchantmentTagProvider(event.getGenerator.getPackOutput, enchantmentProvider, event.getExistingFileHelper))
+    event.addProvider(blockTag)
+    event.addProvider(itemTag)
+    event.addProvider(QuarryEnchantmentTagProvider(event.getGenerator.getPackOutput, enchantmentProvider, event.getExistingFileHelper))
   }
 }

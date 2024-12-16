@@ -10,9 +10,9 @@ import scala.annotation.static
 object QuarryDataGenerator {
   @static
   @SubscribeEvent
-  def onEvent(event: GatherDataEvent): Unit = {
+  def onEvent(event: GatherDataEvent.Client): Unit = {
     QuarryPlus.LOGGER.info("Start NeoForge data generation")
-    event.getGenerator.addProvider(event.includeServer, new RecipeNeoForge(event.getGenerator.getPackOutput, event.getLookupProvider))
+    event.addProvider(new RecipeNeoForge(event.getGenerator.getPackOutput, event.getLookupProvider))
   }
 }
 
