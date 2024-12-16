@@ -200,12 +200,6 @@ public abstract class QuarryEntity extends PowerEntity implements ClientSync {
     }
 
     @Override
-    public void saveToItem(ItemStack stack, HolderLookup.Provider registries) {
-        // Not to save NBT, as it causes crash
-        stack.applyComponents(this.collectComponents());
-    }
-
-    @Override
     public void setChanged() {
         super.setChanged();
         updateModules();

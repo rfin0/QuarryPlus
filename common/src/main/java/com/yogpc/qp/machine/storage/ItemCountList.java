@@ -17,7 +17,7 @@ final class ItemCountList extends ObjectSelectionList<ItemCountList.ItemCountRow
     public ItemCountList(Minecraft minecraft, int width, int height, int y, DebugStorageEntity storageEntity) {
         super(minecraft, width, height, y, 22);
         this.storageEntity = storageEntity;
-        setRenderHeader(false, 0);
+        //setRenderHeader(false, 0);
 
         refreshEntries();
     }
@@ -45,7 +45,7 @@ final class ItemCountList extends ObjectSelectionList<ItemCountList.ItemCountRow
     }
 
     @Override
-    protected int getScrollbarPosition() {
+    protected int scrollBarX() {
         return getRight() - 6;
     }
 

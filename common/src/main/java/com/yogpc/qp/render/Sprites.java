@@ -2,9 +2,9 @@ package com.yogpc.qp.render;
 
 import com.yogpc.qp.QuarryPlus;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -17,9 +17,14 @@ public class Sprites {
     private Sprites() {
     }
 
+    @SuppressWarnings("deprecation")
+    public static ResourceLocation atlas() {
+        return TextureAtlas.LOCATION_BLOCKS;
+    }
+
     private TextureAtlasSprite getSprite(String name) {
         return spriteMap.computeIfAbsent(name, s ->
-            Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(getSpriteLocation(s)));
+            Minecraft.getInstance().getTextureAtlas(atlas()).apply(getSpriteLocation(s)));
     }
 
     @NotNull

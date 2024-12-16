@@ -119,7 +119,8 @@ public class QuarryFakePlayer {
             @Override public void handleCustomCommandSuggestions(ServerboundCommandSuggestionPacket packet) { }
             @Override public void handleSetCommandBlock(ServerboundSetCommandBlockPacket packet) { }
             @Override public void handleSetCommandMinecart(ServerboundSetCommandMinecartPacket packet) { }
-            @Override public void handlePickItem(ServerboundPickItemPacket packet) { }
+            @Override public void handlePickItemFromBlock(ServerboundPickItemFromBlockPacket packet) { }
+            @Override public void handlePickItemFromEntity(ServerboundPickItemFromEntityPacket packet) { }
             @Override public void handleRenameItem(ServerboundRenameItemPacket packet) { }
             @Override public void handleSetBeaconPacket(ServerboundSetBeaconPacket packet) { }
             @Override public void handleSetStructureBlock(ServerboundSetStructureBlockPacket packet) { }

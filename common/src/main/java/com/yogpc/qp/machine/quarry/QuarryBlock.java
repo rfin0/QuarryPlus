@@ -147,10 +147,10 @@ public abstract class QuarryBlock extends QpEntityBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
-        var stack = super.getCloneItemStack(level, pos, state);
-        this.<QuarryEntity>getBlockEntityType().map(t -> t.getBlockEntity(level, pos))
-            .ifPresent(e -> e.saveToItem(stack, level.registryAccess()));
+    protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
+        var stack = super.getCloneItemStack(level, pos, state, includeData);
+        /*this.<QuarryEntity>getBlockEntityType().map(t -> t.getBlockEntity(level, pos))
+            .ifPresent(e -> e.saveToItem(stack, level.registryAccess()));*/
         return stack;
     }
 
