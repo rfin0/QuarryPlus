@@ -73,12 +73,11 @@ runs {
         isGameTest = true
     }
 
-    create("data") {
+    create("clientData") {
         workingDirectory.set(project.file("runs/data"))
         arguments.addAll(
             "--mod",
             "quarryplus",
-            "--all",
             "--output",
             file("src/generated/resources/").toString(),
             "--existing",
@@ -89,13 +88,12 @@ runs {
     }
 
     create("commonData") {
-        runType("data")
+        runType("clientData")
         isDataGenerator = true
         workingDirectory.set(project.file("runs/commonData"))
         arguments.addAll(
             "--mod",
             "quarryplus",
-            "--all",
             "--output",
             project(":common").file("src/generated/resources/").toString(),
             "--existing",
