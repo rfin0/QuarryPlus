@@ -6,11 +6,16 @@ import com.yogpc.qp.machine.QpBlock;
 import com.yogpc.qp.machine.QpBlockProperty;
 import com.yogpc.qp.machine.QpItem;
 import com.yogpc.qp.neoforge.PlatformAccessNeoForge;
+import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.item.ClientItem;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.Block;
@@ -20,12 +25,18 @@ import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 final class StateAndModelProvider extends BlockStateProvider {
+    private final PackOutput.PathProvider itemInfoPathProvider;
+    private final Map<ResourceLocation, ClientItem> clientItemMap = new HashMap<>();
     StateAndModelProvider(DataGenerator gen, ExistingFileHelper exFileHelper) {
         super(gen.getPackOutput(), QuarryPlus.modID, exFileHelper);
+        this.itemInfoPathProvider = gen.getPackOutput().createPathProvider(PackOutput.Target.RESOURCE_PACK, "items");
     }
 
     private ResourceLocation blockTexture(String name) {
@@ -98,7 +109,8 @@ final class StateAndModelProvider extends BlockStateProvider {
             .face(Direction.EAST).uvs(0, 4, 4, 12).texture("#texture").end()
             .end();
 
-        getMultipartBuilder(PlatformAccess.getAccess().registerObjects().frameBlock().get()).part()
+        var block = PlatformAccess.getAccess().registerObjects().frameBlock().get();
+        getMultipartBuilder(block).part()
             .modelFile(center).addModel().end().part()
             .modelFile(side).uvLock(true).addModel().condition(BlockStateProperties.NORTH, true).end().part()
             .modelFile(side).uvLock(true).rotationY(90).addModel().condition(BlockStateProperties.EAST, true).end().part()
@@ -113,9 +125,11 @@ final class StateAndModelProvider extends BlockStateProvider {
             .transform(ItemDisplayContext.FIXED).translation(0, 0, 0).scale(0.8f).rotation(0, 90, 0).end()
             .end()
             .texture("texture", blockTexture("frame"))
+            .texture("particle", blockTexture("frame"))
             .element().from(4, 0, 4).to(12, 12, 12)
             .allFaces((direction, faceBuilder) -> faceBuilder.uvs(4.0f, 4.0f, 12.0f, direction.getAxis() == Direction.Axis.Y ? 12.0f : 16.0f).texture("#texture"))
         ;
+        addClientItem(block.name, modLoc("item/frame"));
     }
 
     void dummyBlocks() {
@@ -125,13 +139,15 @@ final class StateAndModelProvider extends BlockStateProvider {
 
         simpleBlock(PlatformAccessNeoForge.RegisterObjectsNeoForge.BLOCK_SOFT.get(), dummyBlockModel);
         simpleBlockItem(PlatformAccessNeoForge.RegisterObjectsNeoForge.BLOCK_SOFT.get(), dummyBlockModel);
+        addClientItem(PlatformAccessNeoForge.RegisterObjectsNeoForge.BLOCK_SOFT.get().location, modLoc("block/dummy_block"));
         // simpleBlock(Holder.BLOCK_DUMMY_REPLACER, dummyReplacerModel);
     }
 
-    void simpleBlockAndItemCubeAll(Block block) {
+    void simpleBlockAndItemCubeAll(QpBlock block) {
         var model = cubeAll(block);
         simpleBlock(block, model);
         simpleBlockItem(block, model);
+        addClientItem(block.name, block.name.withPrefix("block/"));
     }
 
     void simpleBlockAndItemCubeBottomTop(QpBlock block, ResourceLocation side, ResourceLocation top, ResourceLocation bottom) {
@@ -139,6 +155,7 @@ final class StateAndModelProvider extends BlockStateProvider {
         var model = models().cubeBottomTop("block/" + basePath, side, bottom, top);
         simpleBlock(block, model);
         simpleBlockItem(block, model);
+        addClientItem(block.name, modLoc("block/" + basePath));
     }
 
     void workBlockAndItem(QpBlock block) {
@@ -157,6 +174,7 @@ final class StateAndModelProvider extends BlockStateProvider {
         builder.setModels(builder.partialState().with(QpBlockProperty.WORKING, true), new ConfiguredModel(workingModel));
         builder.setModels(builder.partialState().with(QpBlockProperty.WORKING, false), new ConfiguredModel(normalModel));
         simpleBlockItem(block, normalModel);
+        addClientItem(block.name, modLoc("block/" + basePath));
     }
 
     void workDirectionalBlockAndItem(QpBlock block) {
@@ -187,10 +205,12 @@ final class StateAndModelProvider extends BlockStateProvider {
                 .build();
         });
         simpleBlockItem(block, normalModel);
+        addClientItem(block.name, modLoc("block/" + modelName));
     }
 
     void simpleItem(QpItem item) {
         itemModels().basicItem(item.name);
+        addClientItem(item.name, item.name.withPrefix("item/"));
     }
 
     void simpleItem(QpItem item, String texture) {
@@ -201,6 +221,7 @@ final class StateAndModelProvider extends BlockStateProvider {
         itemModels().getBuilder("item/" + item.name.getPath())
             .parent(new ModelFile.UncheckedModelFile("item/generated"))
             .texture("layer0", texture);
+        addClientItem(item.name, item.name.withPrefix("item/"));
     }
 
     void placer() {
@@ -220,6 +241,7 @@ final class StateAndModelProvider extends BlockStateProvider {
                 .build();
         }, BlockStateProperties.TRIGGERED);
         simpleBlockItem(block, model);
+        addClientItem(block.name, modLoc("block/" + basePath));
     }
 
     void mining_well() {
@@ -322,6 +344,7 @@ final class StateAndModelProvider extends BlockStateProvider {
         itemModels().getBuilder(markerBlock.name.getPath())
             .parent(new ModelFile.UncheckedModelFile("item/generated"))
             .texture("layer0", ResourceLocation.fromNamespaceAndPath(QuarryPlus.modID, "item/" + markerBlock.name.getPath() + "_item"));
+        addClientItem(markerBlock.name, markerBlock.name.withPrefix("item/"));
         for (QpBlock marker : List.<QpBlock>of(PlatformAccess.getAccess().registerObjects().flexibleMarkerBlock().get(), PlatformAccess.getAccess().registerObjects().chunkMarkerBlock().get())) {
             var baseName = marker.name.getPath();
             var m = models().withExistingParent("block/" + baseName, ResourceLocation.fromNamespaceAndPath(QuarryPlus.modID, "block/marker_post"))
@@ -331,6 +354,7 @@ final class StateAndModelProvider extends BlockStateProvider {
             itemModels().getBuilder(baseName)
                 .parent(new ModelFile.UncheckedModelFile("item/generated"))
                 .texture("layer0", ResourceLocation.fromNamespaceAndPath(QuarryPlus.modID, "item/" + baseName + "_item"));
+            addClientItem(marker.name, marker.name.withPrefix("item/"));
         }
     }
 
@@ -402,6 +426,7 @@ final class StateAndModelProvider extends BlockStateProvider {
                 .texture("particle", blockTexture(baseName.replace("waterlogged_", "")));
             simpleBlock(marker, m);
             simpleBlockItem(marker, m);
+            addClientItem(marker.name, marker.name.withPrefix("item/"));
         }
     }
 
@@ -413,5 +438,21 @@ final class StateAndModelProvider extends BlockStateProvider {
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void addClientItem(ResourceLocation key, ResourceLocation base) {
+        var unbaked = ItemModelUtils.plainModel(base);
+        clientItemMap.put(
+            key,
+            new ClientItem(unbaked, ClientItem.Properties.DEFAULT)
+        );
+    }
+
+    @Override
+    public CompletableFuture<?> run(CachedOutput cache) {
+        var parent = super.run(cache);
+        return parent.thenCompose(v ->
+            DataProvider.saveAll(cache, ClientItem.CODEC, itemInfoPathProvider, clientItemMap)
+        );
     }
 }
