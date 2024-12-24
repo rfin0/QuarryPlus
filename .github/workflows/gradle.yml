@@ -78,7 +78,7 @@ jobs:
           IGNORE_OTHER_MODS_IN_RUNTIME: true
       - name: Data ${{ matrix.platform }}
         if: matrix.platform != 'common'
-        run: ./gradlew :${{ matrix.platform }}:runData
+        run: ./gradlew :${{ matrix.platform }}:${{ matrix.platform == 'neoforge' && 'runClientData' || 'runData' }}
         env:
           TEST_UTILITY_LOG_ALL_DATA: true
           IGNORE_OTHER_MODS_IN_RUNTIME: true
