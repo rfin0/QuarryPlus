@@ -2,6 +2,8 @@ package com.yogpc.qp.machine;
 
 import com.yogpc.qp.PlatformAccess;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -29,6 +31,16 @@ public abstract class QpEntityBlock extends QpBlock implements EntityBlock {
         return getBlockEntityType()
             .map(t -> t.create(pos, state))
             .orElse(null);
+    }
+
+    @Override
+    protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
+        var stack = super.getCloneItemStack(level, pos, state, includeData);
+        var tile = level.getBlockEntity(pos);
+        if (tile instanceof QpEntity) {
+            stack.applyComponents(tile.collectComponents());
+        }
+        return stack;
     }
 
     /**

@@ -21,7 +21,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -144,14 +143,6 @@ public abstract class QuarryBlock extends QpEntityBlock {
                 quarry.setState(QuarryState.WAITING, state);
             }
         }
-    }
-
-    @Override
-    protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
-        var stack = super.getCloneItemStack(level, pos, state, includeData);
-        /*this.<QuarryEntity>getBlockEntityType().map(t -> t.getBlockEntity(level, pos))
-            .ifPresent(e -> e.saveToItem(stack, level.registryAccess()));*/
-        return stack;
     }
 
     @Override
