@@ -1,6 +1,5 @@
 package com.yogpc.qp.fabric;
 
-import com.mojang.datafixers.DSL;
 import com.yogpc.qp.*;
 import com.yogpc.qp.config.ConfigHolder;
 import com.yogpc.qp.config.EnableMap;
@@ -76,44 +75,44 @@ public final class PlatformAccessFabric implements PlatformAccess, ServerLifecyc
 
     public static final class RegisterObjectsFabric implements RegisterObjects {
         public static final QuarryBlockFabric QUARRY_BLOCK = new QuarryBlockFabric();
-        public static final BlockEntityType<QuarryEntityFabric> QUARRY_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(QuarryEntityFabric::new, QUARRY_BLOCK).build(DSL.emptyPartType());
+        public static final BlockEntityType<QuarryEntityFabric> QUARRY_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(QuarryEntityFabric::new, QUARRY_BLOCK).build();
         public static final MenuType<QuarryMenuFabric> QUARRY_MENU = new ExtendedScreenHandlerType<>(QuarryMenuFabric::new, BlockPos.STREAM_CODEC);
         public static final AdvQuarryBlockFabric ADV_QUARRY_BLOCK = new AdvQuarryBlockFabric();
-        public static final BlockEntityType<AdvQuarryEntityFabric> ADV_QUARRY_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(AdvQuarryEntityFabric::new, ADV_QUARRY_BLOCK).build(DSL.emptyPartType());
+        public static final BlockEntityType<AdvQuarryEntityFabric> ADV_QUARRY_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(AdvQuarryEntityFabric::new, ADV_QUARRY_BLOCK).build();
         public static final MenuType<AdvQuarryContainer> ADV_QUARRY_MENU = new ExtendedScreenHandlerType<>(AdvQuarryContainer::new, BlockPos.STREAM_CODEC);
         public static final FrameBlock FRAME_BLOCK = new FrameBlock();
         public static final SoftBlock SOFT_BLOCK = new SoftBlock();
         public static final GeneratorBlock GENERATOR_BLOCK = new GeneratorBlock();
-        public static final BlockEntityType<GeneratorEntity> GENERATOR_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(GeneratorEntity::new, GENERATOR_BLOCK).build(DSL.emptyPartType());
+        public static final BlockEntityType<GeneratorEntity> GENERATOR_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(GeneratorEntity::new, GENERATOR_BLOCK).build();
         public static final CheckerItemFabric CHECKER_ITEM = new CheckerItemFabric();
         public static final NormalMarkerBlock MARKER_BLOCK = new NormalMarkerBlock();
-        public static final BlockEntityType<NormalMarkerEntity> MARKER_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(NormalMarkerEntity::new, MARKER_BLOCK).build(DSL.emptyPartType());
+        public static final BlockEntityType<NormalMarkerEntity> MARKER_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(NormalMarkerEntity::new, MARKER_BLOCK).build();
         public static final YSetterItemFabric Y_SET_ITEM = new YSetterItemFabric();
         public static final MenuType<YSetterContainer> Y_SET_MENU = new ExtendedScreenHandlerType<>(YSetterContainer::new, BlockPos.STREAM_CODEC);
         public static final MoverBlock MOVER_BLOCK = new MoverBlock();
-        public static final BlockEntityType<MoverEntity> MOVER_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(MoverEntity::new, MOVER_BLOCK).build(DSL.emptyPartType());
+        public static final BlockEntityType<MoverEntity> MOVER_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(MoverEntity::new, MOVER_BLOCK).build();
         public static final MenuType<MoverContainer> MOVER_MENU = new ExtendedScreenHandlerType<>(MoverContainer::new, BlockPos.STREAM_CODEC);
         public static final PumpModuleItem PUMP_MODULE_ITEM = new PumpModuleItem();
         public static final MenuType<ModuleContainer> MODULE_MENU = new ExtendedScreenHandlerType<>(ModuleContainer::new, BlockPos.STREAM_CODEC);
         public static final BedrockModuleItem BEDROCK_MODULE_ITEM = new BedrockModuleItem();
         public static final ExpModuleItem EXP_MODULE_ITEM = new ExpModuleItem();
         public static final FlexibleMarkerBlock FLEXIBLE_MARKER_BLOCK = new FlexibleMarkerBlock();
-        public static final BlockEntityType<FlexibleMarkerEntity> FLEXIBLE_MARKER_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(FlexibleMarkerEntity::new, FLEXIBLE_MARKER_BLOCK).build(DSL.emptyPartType());
+        public static final BlockEntityType<FlexibleMarkerEntity> FLEXIBLE_MARKER_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(FlexibleMarkerEntity::new, FLEXIBLE_MARKER_BLOCK).build();
         public static final ChunkMarkerBlock CHUNK_MARKER_BLOCK = new ChunkMarkerBlock();
-        public static final BlockEntityType<ChunkMarkerEntity> CHUNK_MARKER_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(ChunkMarkerEntity::new, CHUNK_MARKER_BLOCK).build(DSL.emptyPartType());
+        public static final BlockEntityType<ChunkMarkerEntity> CHUNK_MARKER_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(ChunkMarkerEntity::new, CHUNK_MARKER_BLOCK).build();
         public static final MenuType<MarkerContainer> FLEXIBLE_MARKER_MENU = new ExtendedScreenHandlerType<>(MarkerContainer::createFlexibleMarkerContainer, BlockPos.STREAM_CODEC);
         public static final MenuType<MarkerContainer> CHUNK_MARKER_MENU = new ExtendedScreenHandlerType<>(MarkerContainer::createChunkMarkerContainer, BlockPos.STREAM_CODEC);
         public static final RepeatTickModuleItem REPEAT_TICK_MODULE_ITEM = new RepeatTickModuleItem();
         public static final DebugStorageBlock DEBUG_STORAGE_BLOCK = new DebugStorageBlock();
-        public static final BlockEntityType<DebugStorageEntity> DEBUG_STORAGE_TYPE = FabricBlockEntityTypeBuilder.create(DebugStorageEntity::new, DEBUG_STORAGE_BLOCK).build(DSL.emptyPartType());
+        public static final BlockEntityType<DebugStorageEntity> DEBUG_STORAGE_TYPE = FabricBlockEntityTypeBuilder.create(DebugStorageEntity::new, DEBUG_STORAGE_BLOCK).build();
         public static final MenuType<DebugStorageContainer> DEBUG_STORAGE_MENU = new ExtendedScreenHandlerType<>(DebugStorageContainer::new, BlockPos.STREAM_CODEC);
         public static final FilterModuleItem FILTER_MODULE_ITEM = new FilterModuleItem();
         public static final MenuType<FilterModuleContainer> FILTER_MODULE_MENU = new ExtendedScreenHandlerType<>((i, inventory, pos) -> new FilterModuleContainer(i, inventory, inventory.getSelected()), BlockPos.STREAM_CODEC);
         public static final PlacerBlock PLACER_BLOCK = new PlacerBlock();
-        public static final BlockEntityType<PlacerEntity> PLACER_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(PlacerEntity::new, PLACER_BLOCK).build(DSL.emptyPartType());
+        public static final BlockEntityType<PlacerEntity> PLACER_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(PlacerEntity::new, PLACER_BLOCK).build();
         public static final MenuType<PlacerContainer> PLACER_MENU_TYPE = new ExtendedScreenHandlerType<>(PlacerContainer::createPlacerContainer, BlockPos.STREAM_CODEC);
         public static final RemotePlacerBlock REMOTE_PLACER_BLOCK = new RemotePlacerBlock();
-        public static final BlockEntityType<RemotePlacerEntity> REMOTE_PLACER_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(RemotePlacerEntity::new, REMOTE_PLACER_BLOCK).build(DSL.emptyPartType());
+        public static final BlockEntityType<RemotePlacerEntity> REMOTE_PLACER_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(RemotePlacerEntity::new, REMOTE_PLACER_BLOCK).build();
         public static final MenuType<PlacerContainer> REMOTE_PLACER_MENU_TYPE = new ExtendedScreenHandlerType<>(PlacerContainer::createRemotePlacerContainer, BlockPos.STREAM_CODEC);
 
         public static final LootItemFunctionType<MachineLootFunction> MACHINE_LOOT_FUNCTION = new LootItemFunctionType<>(MachineLootFunction.SERIALIZER);
@@ -122,10 +121,6 @@ public final class PlatformAccessFabric implements PlatformAccess, ServerLifecyc
         public static final CreativeModeTab TAB = QuarryPlus.buildCreativeModeTab(FabricItemGroup.builder()).build();
         private static final Map<Class<? extends QpBlock>, BlockEntityType<?>> BLOCK_ENTITY_TYPES = new HashMap<>();
         private static final Map<String, EnableMap.EnableOrNot> ENABLE_MAP = new HashMap<>();
-
-        public static BlockEntityType<?>[] entityTypes() {
-            return BLOCK_ENTITY_TYPES.values().toArray(new BlockEntityType[0]);
-        }
 
         static void registerAll() {
             // Machine
