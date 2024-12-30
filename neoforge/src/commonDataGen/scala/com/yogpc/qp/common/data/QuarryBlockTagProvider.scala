@@ -4,12 +4,12 @@ import com.yogpc.qp.{PlatformAccess, QuarryPlus}
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 import net.minecraft.tags.BlockTags
-import net.neoforged.neoforge.common.data.{BlockTagsProvider, ExistingFileHelper}
+import net.neoforged.neoforge.common.data.BlockTagsProvider
 
 import java.util.concurrent.CompletableFuture
 
-class QuarryBlockTagProvider(output: PackOutput, lookupProvider: CompletableFuture[HolderLookup.Provider], existingFileHelper: ExistingFileHelper)
-  extends BlockTagsProvider(output, lookupProvider, QuarryPlus.modID, existingFileHelper) {
+class QuarryBlockTagProvider(output: PackOutput, lookupProvider: CompletableFuture[HolderLookup.Provider])
+  extends BlockTagsProvider(output, lookupProvider, QuarryPlus.modID) {
 
   override def addTags(provider: HolderLookup.Provider): Unit = {
     val holder = PlatformAccess.getAccess.registerObjects()
