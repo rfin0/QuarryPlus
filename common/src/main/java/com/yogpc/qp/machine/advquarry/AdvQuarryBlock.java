@@ -202,4 +202,9 @@ public class AdvQuarryBlock extends QpEntityBlock {
             maxX + 1, pos.getY() + 4, maxZ + 1, quarryBehind
         );
     }
+
+    @Override
+    protected boolean shouldCloneItemHasData() {
+        return true;
+    }
 }

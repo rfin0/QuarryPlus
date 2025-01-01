@@ -36,11 +36,14 @@ public abstract class QpEntityBlock extends QpBlock implements EntityBlock {
     @Override
     protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
         var stack = super.getCloneItemStack(level, pos, state, includeData);
-        var tile = level.getBlockEntity(pos);
-        if (tile instanceof QpEntity) {
-            stack.applyComponents(tile.collectComponents());
+        if (shouldCloneItemHasData()) {
+            MachineLootFunction.process(stack, level.getBlockEntity(pos));
         }
         return stack;
+    }
+
+    protected boolean shouldCloneItemHasData() {
+        return false;
     }
 
     /**

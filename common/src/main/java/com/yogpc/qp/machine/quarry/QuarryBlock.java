@@ -203,4 +203,8 @@ public abstract class QuarryBlock extends QpEntityBlock {
         return builder.build();
     }
 
+    @Override
+    protected boolean shouldCloneItemHasData() {
+        return true;
+    }
 }

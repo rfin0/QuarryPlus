@@ -10,6 +10,7 @@ import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunct
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -34,8 +35,10 @@ public final class MachineLootFunction extends LootItemConditionalFunction {
         return PlatformAccess.getAccess().registerObjects().machineLootFunction().get();
     }
 
-    public static void process(ItemStack stack, BlockEntity entity) {
-        stack.applyComponents(entity.collectComponents());
+    public static void process(ItemStack stack, @Nullable BlockEntity entity) {
+        if (entity != null) {
+            stack.applyComponents(entity.collectComponents());
+        }
     }
 
     public static LootItemConditionalFunction.Builder<?> builder() {
