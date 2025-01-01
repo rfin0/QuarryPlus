@@ -65,4 +65,4 @@ dependencies {
     "gameTestImplementation"(libs.jupiter)
 }
 
-tasks.create("runGameTestServer")
+tasks.register("runGameTestServer")
