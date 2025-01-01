@@ -135,13 +135,6 @@ repositories {
     }
     mavenCentral()
     mavenLocal()
-    maven {
-        name = "Kotori316Mirror"
-        url = uri("https://storage.googleapis.com/kotori316-maven-storage/maven/")
-        content {
-            includeGroup("com.kotori316")
-        }
-    }
 }
 
 dependencies {
