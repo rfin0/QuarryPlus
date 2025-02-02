@@ -39,14 +39,14 @@ public final class QuarryFakePlayerCommon {
         player.setYRot(direction.toYRot());
     }
 
-    public static ServerPlayer getOwnImplementation(ServerLevel serverLevel, ClientInformation info, Function<ServerLevel, MinecraftServer> serverGetter) {
-        return new InternalFakePlayer(serverLevel, PROFILE, info, serverGetter);
+    public static ServerPlayer getOwnImplementation(ServerLevel serverLevel, Function<ServerLevel, MinecraftServer> serverGetter) {
+        return new InternalFakeLikePlayer(serverLevel, PROFILE, ClientInformation.createDefault(), serverGetter);
     }
 
-    private static final class InternalFakePlayer extends ServerPlayer {
+    private static final class InternalFakeLikePlayer extends ServerPlayer {
         private final Function<ServerLevel, MinecraftServer> serverGetter;
 
-        private InternalFakePlayer(ServerLevel level, GameProfile name, ClientInformation info, Function<ServerLevel, MinecraftServer> serverGetter) {
+        private InternalFakeLikePlayer(ServerLevel level, GameProfile name, ClientInformation info, Function<ServerLevel, MinecraftServer> serverGetter) {
             super(level.getServer(), level, name, info);
             this.serverGetter = serverGetter;
             this.connection = new NetHandler(level.getServer(), this);

@@ -19,6 +19,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -51,8 +52,13 @@ final class MiningNeoForge implements PlatformAccess.Mining {
 
     @Override
     public ServerPlayer getQuarryFakePlayer(QpEntity miningEntity, ServerLevel level, BlockPos target) {
-        var player = FakePlayerFactory.get(level, QuarryFakePlayerCommon.PROFILE);
-        QuarryFakePlayerCommon.setDirection(player, Direction.DOWN);
-        return player;
+        ServerPlayer fakePlayer;
+        if (PlatformAccess.config().customPlayer()) {
+            fakePlayer = QuarryFakePlayerCommon.getOwnImplementation(level, (s) -> ServerLifecycleHooks.getCurrentServer());
+        } else {
+            fakePlayer = FakePlayerFactory.get(level, QuarryFakePlayerCommon.PROFILE);
+        }
+        QuarryFakePlayerCommon.setDirection(fakePlayer, Direction.DOWN);
+        return fakePlayer;
     }
 }

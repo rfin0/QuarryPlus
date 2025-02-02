@@ -47,7 +47,12 @@ final class MiningFabric implements PlatformAccess.Mining {
 
     @Override
     public ServerPlayer getQuarryFakePlayer(QpEntity miningEntity, ServerLevel level, BlockPos target) {
-        var fakePlayer = FakePlayer.get(level, QuarryFakePlayerCommon.PROFILE);
+        ServerPlayer fakePlayer;
+        if (PlatformAccess.config().customPlayer()) {
+            fakePlayer = QuarryFakePlayerCommon.getOwnImplementation(level, ServerLevel::getServer);
+        } else {
+            fakePlayer = FakePlayer.get(level, QuarryFakePlayerCommon.PROFILE);
+        }
         QuarryFakePlayerCommon.setDirection(fakePlayer, Direction.DOWN);
         return fakePlayer;
     }

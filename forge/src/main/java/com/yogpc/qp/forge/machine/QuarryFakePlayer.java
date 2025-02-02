@@ -3,7 +3,6 @@ package com.yogpc.qp.forge.machine;
 import com.yogpc.qp.machine.QuarryFakePlayerCommon;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -26,10 +25,7 @@ public class QuarryFakePlayer {
 
     @SuppressWarnings("UnstableApiUsage")
     public static ServerPlayer get(ServerLevel serverLevel) {
-        return players.computeIfAbsent(serverLevel, key -> {
-            var cookie = CommonListenerCookie.createInitial(QuarryFakePlayerCommon.PROFILE, false);
-            return QuarryFakePlayerCommon.getOwnImplementation(key, cookie.clientInformation(), (s) -> ServerLifecycleHooks.getCurrentServer());
-        });
+        return players.computeIfAbsent(serverLevel, key -> QuarryFakePlayerCommon.getOwnImplementation(key, (s) -> ServerLifecycleHooks.getCurrentServer()));
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
