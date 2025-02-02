@@ -20,7 +20,8 @@ import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.stats.Stat;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.RelativeMovement;
+import net.minecraft.world.entity.PositionMoveRotation;
+import net.minecraft.world.entity.Relative;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -61,7 +62,12 @@ public final class QuarryFakePlayerCommon {
         }
 
         @Override
-        public boolean isInvulnerableTo(DamageSource source) {
+        public boolean isInvulnerableTo(ServerLevel level, DamageSource damageSource) {
+            return true;
+        }
+
+        @Override
+        public boolean isInvulnerable() {
             return true;
         }
 
@@ -108,7 +114,8 @@ public final class QuarryFakePlayerCommon {
             @Override public void handleCustomCommandSuggestions(ServerboundCommandSuggestionPacket packet) { }
             @Override public void handleSetCommandBlock(ServerboundSetCommandBlockPacket packet) { }
             @Override public void handleSetCommandMinecart(ServerboundSetCommandMinecartPacket packet) { }
-            @Override public void handlePickItem(ServerboundPickItemPacket packet) { }
+            @Override public void handlePickItemFromBlock(ServerboundPickItemFromBlockPacket packet) { }
+            @Override public void handlePickItemFromEntity(ServerboundPickItemFromEntityPacket packet) { }
             @Override public void handleRenameItem(ServerboundRenameItemPacket packet) { }
             @Override public void handleSetBeaconPacket(ServerboundSetBeaconPacket packet) { }
             @Override public void handleSetStructureBlock(ServerboundSetStructureBlockPacket packet) { }
@@ -143,7 +150,7 @@ public final class QuarryFakePlayerCommon {
             @Override public void handlePlayerAbilities(ServerboundPlayerAbilitiesPacket packet) { }
             @Override public void handleChangeDifficulty(ServerboundChangeDifficultyPacket packet) { }
             @Override public void handleLockDifficulty(ServerboundLockDifficultyPacket packet) { }
-            @Override public void teleport(double x, double y, double z, float yaw, float pitch, Set<RelativeMovement> relativeSet) { }
+            @Override public void teleport(PositionMoveRotation rotation, Set<Relative> relatives) { }
             @Override public void ackBlockChangesUpTo(int sequence) { }
             @Override public void handleChatCommand(ServerboundChatCommandPacket packet) { }
             @Override public void handleChatAck(ServerboundChatAckPacket packet) { }
