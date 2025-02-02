@@ -28,6 +28,8 @@ public interface QuarryConfig {
 
     boolean removeCommonMaterialsByChunkDestroyer();
 
+    boolean customPlayer();
+
     static QuarryConfig load(Path path, BooleanSupplier inDevelop) {
         try (var config = CommentedFileConfig.builder(path)
             .preserveInsertionOrder()

@@ -45,8 +45,9 @@ final class QuarryConfigLoader {
         var enableChunkLoader = config.<Boolean>get("enableChunkLoader");
         var convertDeepslateOres = config.<Boolean>get("convertDeepslateOres");
         var removeCommonMaterialsByChunkDestroyer = config.<Boolean>get("removeCommonMaterialsByChunkDestroyer");
+        var customPlayer = config.<Boolean>get("customPlayer");
 
-        return new QuarryConfigImpl(debug, noEnergy, powerMap, enableMap, rebornEnergyConversionCoefficient, removeBedrockOnNetherTop, enableChunkLoader, convertDeepslateOres, removeCommonMaterialsByChunkDestroyer);
+        return new QuarryConfigImpl(debug, noEnergy, powerMap, enableMap, rebornEnergyConversionCoefficient, removeBedrockOnNetherTop, enableChunkLoader, convertDeepslateOres, removeCommonMaterialsByChunkDestroyer, customPlayer);
     }
 
     record QuarryConfigImpl(
@@ -58,7 +59,8 @@ final class QuarryConfigLoader {
         boolean removeBedrockOnNetherTop,
         boolean enableChunkLoader,
         boolean convertDeepslateOres,
-        boolean removeCommonMaterialsByChunkDestroyer
+        boolean removeCommonMaterialsByChunkDestroyer,
+        boolean customPlayer
     ) implements QuarryConfig {
     }
 
@@ -75,6 +77,7 @@ final class QuarryConfigLoader {
         defineBoolean(config, specConfig, "enableChunkLoader", true, "Enable Chunk Loader in machines");
         defineBoolean(config, specConfig, "convertDeepslateOres", false, "Convert Deepslate ores to normal ores");
         defineBoolean(config, specConfig, "removeCommonMaterialsByChunkDestroyer", true, "Remove common materials(Base blocks in Over world and the Nether) obtained by Chunk Destroyer");
+        defineBoolean(config, specConfig, "customPlayer", false, "Enable Custom player mode");
 
         // powerMap.quarry.*
         defineInCodec(config, specConfig, "powerMap.quarry", PowerMap.Default.QUARRY);
